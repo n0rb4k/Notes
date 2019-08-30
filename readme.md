@@ -12,6 +12,7 @@ Table of Contents
       * [Bypassing Windows Defender](#bypassing-windows-defender)
    * [WebApplication Hacking](#webapplication-hacking)
       * [Create a PHP Backdoor shell](#create-a-php-backdoor-shell)
+      * [Check for broken links to hijack](#check-for-broken-links-to-hijack)
    * [Utils](#utils)
       * [Shell to TTY](#shell-to-tty)
 
@@ -83,7 +84,7 @@ weevely <URL> <password> [cmd]
 # Recover an existing session
 weevely session <path> [cmd]
 ```
-## Check for brocken links to hijack
+## Check for broken links to hijack
 **broken-link-checker** will crawl a target and look for broken links. Whenever I use this tool I like to run:
 
 ```bash
