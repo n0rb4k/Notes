@@ -83,6 +83,16 @@ weevely <URL> <password> [cmd]
 # Recover an existing session
 weevely session <path> [cmd]
 ```
+## Check for brocken links to hijack
+**broken-link-checker** will crawl a target and look for broken links. Whenever I use this tool I like to run:
+
+```bash
+blc -rof --filter-level 3 https://example.com/
+```
+Adapting it to something like this in order to prevent false positives:
+```bash
+blc -rfoi --exclude linkedin.com --exclude youtube.com --filter-level 3 https://example.com/
+```
 
 # Utils
 ## Shell to TTY
