@@ -12,6 +12,7 @@ Table of Contents
       * [Bypassing Windows Defender](#bypassing-windows-defender)
    * [WebApplication Hacking](#webapplication-hacking)
       * [Create a PHP Backdoor shell](#create-a-php-backdoor-shell)
+      * [Demonstrating the possibility of steal cookies using JS](#demonstrating-the-possibility-of-steal-cookies-abusing-of-xss-vulnerability)
       * [Check for broken links to hijack](#check-for-broken-links-to-hijack)
    * [Utils](#utils)
       * [Shell to TTY](#shell-to-tty)
