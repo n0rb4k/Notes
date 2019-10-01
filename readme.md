@@ -84,12 +84,12 @@ weevely <URL> <password> [cmd]
 # Recover an existing session
 weevely session <path> [cmd]
 ```
-## Steal cookies abusing of XSS vulnerability
+## Demonstrating the possibility of steal cookies abusing of XSS vulnerability
 ```js
 alert(self['alert'](self['document']['cookie'])
 alert(document.cookie)
 ```
-[Interesting link](https://www.secjuice.com/bypass-xss-filters-using-javascript-global-variables/)
+[Interesting link - talks about WAF bypass](https://www.secjuice.com/bypass-xss-filters-using-javascript-global-variables/)
 
 ## Check for broken links to hijack
 **broken-link-checker** will crawl a target and look for broken links. Whenever I use this tool I like to run:
