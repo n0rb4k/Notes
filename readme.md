@@ -1,21 +1,28 @@
 Table of Contents
 =================
 
-   * [Reconnaissance &amp; Gathering](#reconnaissance--gathering)
-      * [Mapping the Network](#mapping-the-network)
-      * [NBTscan](#nbtscan)
-      * [Nmap scan basics](#nmap-scan-basics)
-   * [PowerShell](#powershell)
-      * [To load a PS module into the memory](#to-load-a-ps-module-into-the-memory)
-      * [Sharing files with Windows machine](#sharing-files-with-windows-machine)
-   * [PrivEsc on Windows](#privesc-on-windows)
-      * [Bypassing Windows Defender](#bypassing-windows-defender)
-   * [WebApplication Hacking](#webapplication-hacking)
-      * [Create a PHP Backdoor shell](#create-a-php-backdoor-shell)
-      * [Demonstrating the possibility of steal cookies using JS](#demonstrating-the-possibility-of-steal-cookies-abusing-of-xss-vulnerability)
-      * [Check for broken links to hijack](#check-for-broken-links-to-hijack)
-   * [Utils](#utils)
-      * [Shell to TTY](#shell-to-tty)
+* [Reconnaissance &amp; Gathering](#reconnaissance--gathering)
+   * [Mapping the Network](#mapping-the-network)
+   * [NBTscan](#nbtscan)
+   * [Nmap scan basics](#nmap-scan-basics)
+   * [DNS subdomains reconnaissance](#dns-subdomains-reconnaissance)
+* [PowerShell](#powershell)
+   * [To load a PS module into the memory](#to-load-a-ps-module-into-the-memory)
+   * [Sharing files with Windows machine](#sharing-files-with-windows-machine)
+* [PrivEsc on Windows](#privesc-on-windows)
+   * [Bypassing Windows Defender](#bypassing-windows-defender)
+* [WebApplication Hacking](#webapplication-hacking)
+   * [Create a PHP Backdoor shell](#create-a-php-backdoor-shell)
+   * [Demonstrating the possibility of steal cookies abusing of XSS vulnerability](#demonstrating-the-possibility-of-steal-cookies-abusing-of-xss-vulnerability)
+   * [Check for broken links to hijack](#check-for-broken-links-to-hijack)
+   * [Bypassing file upload WAF](#bypassing-file-upload-waf)
+* [Utils](#utils)
+   * [Shell to TT](#shell-to-tt)
+   * [Capture traffic](#capture-traffic)
+   * [Detect incoming Ping](#detect-incoming-ping)
+* [Miscellaneous](#miscellaneous)
+   * [Terminal recording](#terminal-recording)
+   * [Command output copy](#command-output-copy)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
@@ -39,6 +46,20 @@ nmap -p- -sV -sS -T4 -oA nmap-output [IP]</MASK>
 Additionaly, you can run it with:
 * -sC: This will try to run some default scripts over the services
 * -sV: Get the service version
+
+## DNS subdomains reconnaissance
+Starting an external assessment to any client, the firest we used to do is to perform a gathering phase over the clients domains,
+in order to get as much information as possible. We usually do focus on subdomains finding, so we want to find out all the servers/vhosts/websites belonging to the client.
+
+The following are tools we have used and get some good results with:
+* fierce --> (Github)[https://github.com/mschwager/fierce]
+* censys --> (Github)[https://github.com/christophetd/censys-subdomain-finder]
+* sublist3r --> (Github)[https://github.com/aboul3la/Sublist3r]
+
+The best tool we are used so far is sublist3r because it supports the search into the main searching cores of internet (Google, Bing, etc...)
+Fierce is the most basic one, yet very good to perform fast reconnaissances.
+Censys needs an API, easy to retrieve from its website.
+
 
 # PowerShell
 ## To load a PS module into the memory
@@ -85,16 +106,17 @@ weevely <URL> <password> [cmd]
 # Recover an existing session
 weevely session <path> [cmd]
 ```
+
 ## Demonstrating the possibility of steal cookies abusing of XSS vulnerability
 ```js
-alert(self['alert'](self['document']['cookie'])
+alert(self['alert'](self['document']['cookie']))
 alert(document.cookie)
 ```
+
 [Interesting link - talks about WAF bypass](https://www.secjuice.com/bypass-xss-filters-using-javascript-global-variables/)
 
 ## Check for broken links to hijack
 **broken-link-checker** will crawl a target and look for broken links. Whenever I use this tool I like to run:
-
 ```bash
 blc -rof --filter-level 3 https://example.com/
 ```
@@ -103,11 +125,65 @@ Adapting it to something like this in order to prevent false positives:
 blc -rfoi --exclude linkedin.com --exclude youtube.com --filter-level 3 https://example.com/
 ```
 
+## Bypassing file upload WAF
+The following are some tips to get the WAF bypassed, and be able to exploit some vulnerability to upload, for example, a webshell.
+* Change *Content-Type*
+* Try to change the file extension to some executable-extensions like *.php5, .php3, .shtml, .asa*
+* Change extension letters to capital, for example *.pHp5, .Php3, .aSp, ...*
+* Put spaces and/or dots at the end of the filename like *file.asp  . .    .... .*
+* Use a semicolon after the forbidden extension and before the permitted extension. Example: *file.asp;.jpg* (Only IIS 6 or prior)
+* Upload a file with multiple extensions like *file.php.jpg*
+* Use a NULL-characters: *file.asp%00.php"*
+* Create a file with a forbidden extension: *file.asp:.jpg* or *file.asp::$data*
+* **Combination of the above**
+
 # Utils
-## Shell to TTY
+## Shell to TT
 ```bash
 python -c "import pty;pty.spawn('/bin/bash')"
 Ctrl + z
 stty raw -echo
 fg
+```
+
+## Capture traffic
+It's very recommendable to record all the traffic, while we're performing an internal InfoSec assesment to any client.
+If it's expected to generate tons of traffic, for example, if we are testing a large infrastructure organisation, I recommend to capture
+only the outgoing traffic, it is possible with the following command:
+
+```bash
+sudo tcpdump -v -ni [INTERFACE] -w [FILE-OUT] -C 100 src host [OUR_IP]
+```
+
+However, if we want to capture both outbound and inbound traffic, use the following command:
+
+```bash
+sudo tcpdump -v -ni [INTERFACE] -w [FILE-OUT] -C 100
+```
+
+The commands above are going to generate files with size of 100 Mb, so it will be feasible to analyze, if necessary.
+
+## Detect incoming Ping
+Very useful when we are trying to get reverse connection, for example from a RCE vulnerability. The following command will dump all the incoming
+ping to our network interface.
+
+```bash
+sudo tcpdump ip proto \\icmp
+```
+
+# Miscellaneous
+## Terminal recording
+
+We can add the following line to our *~/.bashrc* file in order to record each terminal we open.
+
+```bash
+test "$(ps -ocommand= -p $PPID | awk '{print $1}')" == 'script' || (script -f $HOME/.log/$(date +"%d-%b-%y_%H-%M-%S")_shell.log)
+```
+
+## Command output copy
+
+It could be necessary to copy the command output directly to the **clipboard**, the following command make it possible:
+
+```bash
+[COMMAND] | xclip -selection clipboard
 ```
