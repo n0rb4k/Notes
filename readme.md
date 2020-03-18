@@ -57,9 +57,9 @@ Starting an external assessment to any client, the firest we used to do is to pe
 in order to get as much information as possible. We usually do focus on subdomains finding, so we want to find out all the servers/vhosts/websites belonging to the client.
 
 The following are tools we have used and get some good results with:
-* fierce --> (Github)[https://github.com/mschwager/fierce]
-* censys --> (Github)[https://github.com/christophetd/censys-subdomain-finder]
-* sublist3r --> (Github)[https://github.com/aboul3la/Sublist3r]
+* fierce --> [Github](https://github.com/mschwager/fierce)
+* censys --> [Github](https://github.com/christophetd/censys-subdomain-finder)
+* sublist3r --> [Github](https://github.com/aboul3la/Sublist3r)
 
 The best tool we are used so far is sublist3r because it supports the search into the main searching cores of internet (Google, Bing, etc...)
 Fierce is the most basic one, yet very good to perform fast reconnaissances.
