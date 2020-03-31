@@ -310,7 +310,9 @@ It would be very interesting to add this oneliner command to the "Initial comman
 tput bold; tput setaf 2; echo -n "wlan0: ";ifconfig wlan0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'; if ifconfig tun0 2> /dev/null 1>&2; then echo -n "tun0: ";ifconfig tun0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'; fi; tput init; bash 
 ```
 This command above will place, every time we open a new terminal, the following usefull data:
+
 wlan0: [IP]
+
 tun0: [IP]
 
 I have utilized this information because these are the interfaces I normally have UP. Of course the command is highly escalable according the each one needs...
