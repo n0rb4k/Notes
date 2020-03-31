@@ -7,6 +7,7 @@ Table of Contents
       * [NBTscan](#nbtscan)
       * [Nmap scan basics](#nmap-scan-basics)
       * [DNS subdomains reconnaissance](#dns-subdomains-reconnaissance)
+      * [NFS enumeration](#nfs-enumeration)
    * [PowerShell](#powershell)
       * [To load a PS module into the memory](#to-load-a-ps-module-into-the-memory)
       * [Changing <em>ExecutionPolicy</em> to Bypass](#changing-executionpolicy-to-bypass)
@@ -68,6 +69,16 @@ The best tool we are used so far is sublist3r because it supports the search int
 Fierce is the most basic one, yet very good to perform fast reconnaissances.
 Censys needs an API, easy to retrieve from its website.
 
+## NFS enumeration
+If port scan returns any port which may indicates a NFS mount point accessible, we could just do the below command in order to enumerate possible opened shares:
+```bash
+showmount -e [RHOST]
+```
+
+If it returns any, we can mount it locally just doing:
+```bash
+sudo mount -t nfs [RHOST]:/[SHARE] /mnt/
+```
 
 # PowerShell
 ## To load a PS module into the memory
