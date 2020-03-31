@@ -8,6 +8,7 @@ Table of Contents
       * [Nmap scan basics](#nmap-scan-basics)
       * [DNS subdomains reconnaissance](#dns-subdomains-reconnaissance)
       * [NFS enumeration](#nfs-enumeration)
+      * [SMTP enumeration](#smtp-enumeration)
    * [PowerShell](#powershell)
       * [To load a PS module into the memory](#to-load-a-ps-module-into-the-memory)
       * [Changing <em>ExecutionPolicy</em> to Bypass](#changing-executionpolicy-to-bypass)
@@ -78,6 +79,12 @@ showmount -e [RHOST]
 If it returns any, we can mount it locally just doing:
 ```bash
 sudo mount -t nfs [RHOST]:/[SHARE] /mnt/
+```
+
+## SMTP enumeration
+It could be interesting to perform a BruteForce over the SMTP. It's recommended in cases when the nmap enumeration has not returned the data it normally returns.
+```bash
+smtp-user-enum -M VRFY -U /usr/share/wordlists/dirb/common.txt -t [RHOST]
 ```
 
 # PowerShell
