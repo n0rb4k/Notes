@@ -18,7 +18,7 @@ Table of Contents
       * [Using BloodHound](#using-bloodhound)
       * [From DNSAdmin group to Administrators](#from-dnsadmin-to-administrator)
       * [From Exchange Windows Permissions group to Administrators](#from-exchange-windows-permissions-group-to-administrators)
-   * [Eternal* Vulnerabilities exploitation](#eternal*-vulnerabilities-exploitation)
+   * [EternalBlue Vulnerabilities exploitation](#eternalblue-vulnerabilities-exploitation)
    * [WebApplication Hacking](#webapplication-hacking)
       * [Create a PHP Backdoor shell](#create-a-php-backdoor-shell)
       * [Demonstrating the possibility of steal cookies abusing of XSS vulnerability](#demonstrating-the-possibility-of-steal-cookies-abusing-of-xss-vulnerability)
@@ -208,7 +208,7 @@ secretsdump [DOMAIN]/[USER]:[PASSWORD]@10.10.10.161
 ./psexec.py -hashes :[HASH] [DOMAIN]/administrator@[RHOST] powershell.exe
 ```
 
-# Eternal* Vulnerabilities exploitation
+# Eternalblue Vulnerabilities exploitation
 
 For those who want to exploit this very common vulnerabilities, present in a lot of boot2root machines, but taking the handicap that no Metasploit is going to be utilized, there are different techiniques/exploits that you can use. 
 
