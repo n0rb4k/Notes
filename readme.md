@@ -212,7 +212,7 @@ secretsdump [DOMAIN]/[USER]:[PASSWORD]@10.10.10.161
 
 For those who want to exploit this very common vulnerabilities, present in a lot of boot2root machines, but taking the handicap that no Metasploit is going to be utilized, there are different techiniques/exploits that you can use. 
 
-Metasploit can be avoided for example if you are being training yourself to get OSCP certification you surely know that MSF is banned...
+Metasploit must be avoided for example if you are being training yourself to get OSCP certification you surely know that MSF is banned... Or just simply to be more independent of this kind of tools.
 
 To detect if we are in front of the vulnerability, the nmap can do the job:
 ```bash
