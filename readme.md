@@ -38,8 +38,6 @@ Table of Contents
       * [Command output copy](#command-output-copy)
       * [Bash init commands](#bash-init-commands)
 
-Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
-
 # Reconnaissance & Gathering
 ## Mapping the Network
 If we wanted to check for machines on the subnet with SMB signing not enabled, we can use RunFinger.py which is in the responder toolset.
