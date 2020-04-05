@@ -21,6 +21,7 @@ Table of Contents
    * [EternalBlue Vulnerabilities exploitation](#eternalblue-vulnerabilities-exploitation)
    * [Oracle Hacking](#oracle-hacking)
    * [Forensics](#forensics)
+      * [Extracting credentials from memory dump](#extracting-credentials-from-memory-dump)
    * [WebApplication Hacking](#webapplication-hacking)
       * [Create a PHP Backdoor shell](#create-a-php-backdoor-shell)
       * [Demonstrating the possibility of steal cookies abusing of XSS vulnerability](#demonstrating-the-possibility-of-steal-cookies-abusing-of-xss-vulnerability)
