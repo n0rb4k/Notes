@@ -1,5 +1,13 @@
-# hi
-blabla
+# Disclaimer
+The following notes are a mix of all the remarkable things I have seen and am seeing in my day-to-day life as a Pentester and also as a CTF/Boot2Root participant. 
+
+These notes have been written mainly to have a collection of commands that have worked well and having it all collected has to serve as a "shortcut".
+
+They have also been written as part of my preparation for OSCP.
+
+By all of the above I mean that these Notes are not for malignant or malicious purposes, and cannot be used to carry out malicious/illegal actions.
+
+I will not be responsible in any way for the use people may make of the concepts and commands explained in the following sections.
 
 
 Table of Contents
