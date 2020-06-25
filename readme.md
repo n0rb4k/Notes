@@ -455,11 +455,13 @@ I have utilized this information because these are the interfaces I normally hav
 I started to learn in deep how to use regex. This search "engine" is one of the most used and usefull in my opinion. It will be pasted some interesting patterns.
 
 **Matching IPs:**
+
 ```bash
 ([\d]{1,3}\.){3}[\d]{1,3}
 ```
 
 **Matching IPs and port:**
+
 ```bash
 (([\d]{1,3}\.){3}[\d]{1,3})\:[\d]{1,5}
 ```
