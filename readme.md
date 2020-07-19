@@ -46,7 +46,7 @@ Table of Contents
       * [Detect incoming Ping](#detect-incoming-ping)
       * [Mount SMB shares](#mount-smb-shares)
       * [Mount VHDX virtual machines](#mount-vhdx-virtual-machines)
-      * [Speeding up Nmap + ProxyChains](#speeding-up-nmap-+-proxychains)
+      * [Speeding up Nmap and ProxyChains](#speeding-up-nmap-and-proxychains)
    * [Miscellaneous](#miscellaneous)
       * [Terminal recording](#terminal-recording)
       * [Command output copy](#command-output-copy)
