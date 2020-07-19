@@ -47,6 +47,7 @@ Table of Contents
       * [Mount SMB shares](#mount-smb-shares)
       * [Mount VHDX virtual machines](#mount-vhdx-virtual-machines)
       * [Speeding up Nmap and ProxyChains](#speeding-up-nmap-and-proxychains)
+      * [Scanning ports with NetCat](#scanning-ports-with-netcat)
    * [Miscellaneous](#miscellaneous)
       * [Terminal recording](#terminal-recording)
       * [Command output copy](#command-output-copy)
@@ -426,6 +427,12 @@ If we are pivoting and using a dinamically redirection trough SSH, we should use
 
 ```bash
 seq 1 65535 | xargs -P 50 -I{} proxychains nmap -p{} -Pn --open -n -T4 --min-parallelism 100 --min-rate 1 --append-output -oG test 10.1.1.1 | grep open
+```
+## Scanning ports with NetCat
+In case we don't have nmap available, there is the following simple yet functional for loop:
+
+```bash
+for i in {1..65535}; do timeout 0.01 nc -z -nv 10.1.1.236 $i; done
 ```
 
 # Miscellaneous
