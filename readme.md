@@ -425,7 +425,7 @@ sudo guestmount --add /media/audit2/Disco_ext1/LadyBird/ladybird.vhdx --inspecto
 If we are pivoting and using a dinamically redirection trough SSH, we should use proxychains to carry out nmap discovery. A good execution which will highly speed up the task is the following:
 
 ```bash
-seq 1 65535 | xargs -P 50 -I{} proxychains nmap -p{} -sT -Pn --open -n -T4 --min-parallelism 100 --min-rate 1 --append-output -oG test 10.1.1.1 | grep open
+seq 1 65535 | xargs -P 50 -I{} proxychains nmap -p{} -Pn --open -n -T4 --min-parallelism 100 --min-rate 1 --append-output -oG test 10.1.1.1 | grep open
 ```
 
 # Miscellaneous
