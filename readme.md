@@ -53,6 +53,7 @@ Table of Contents
       * [Command output copy](#command-output-copy)
       * [Bash init commands](#bash-init-commands)
       * [Regex Utils](#regex-utils)
+      * [Reverse a list in Bash](#reverse-a-list-in-bash)
 
 # Reconnaissance & Gathering
 ## Mapping the Network
@@ -479,4 +480,9 @@ I started to learn in deep how to use regex. This search "engine" is one of the 
 
 ```bash
 (([\d]{1,3}\.){3}[\d]{1,3})\:[\d]{1,5}
+```
+## Reverse a list in Bash
+
+```bash
+cat [FILE] | awk '{ for (i=NF; i>1; i--) printf("%s ",$i); print $1; }'
 ```
