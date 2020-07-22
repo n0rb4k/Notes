@@ -48,6 +48,7 @@ Table of Contents
       * [Mount VHDX virtual machines](#mount-vhdx-virtual-machines)
       * [Speeding up Nmap and ProxyChains](#speeding-up-nmap-and-proxychains)
       * [Scanning ports with NetCat](#scanning-ports-with-netcat)
+      * [SSH cipher legacy](#ssh-cipher-kegacy)
    * [Miscellaneous](#miscellaneous)
       * [Terminal recording](#terminal-recording)
       * [Command output copy](#command-output-copy)
@@ -434,6 +435,17 @@ In case we don't have nmap available, there is the following simple yet function
 
 ```bash
 for i in {1..65535}; do timeout 0.01 nc -z -nv 10.1.1.236 $i; done
+```
+
+## SSH cipher legacy
+If you get the following error when you attempted to connect for SSH:
+
+***"no matching key exchange method found. Their offer: diffie-hellman-group-exchange-sha1,diffie-hellman-group14-sha1,diffie-hellman-group1-sha1"***
+
+You can do the following workaround:
+
+```bash
+ssh -oKexAlgorithms=+diffie-hellman-group1-sha1 user@hostname
 ```
 
 # Miscellaneous
