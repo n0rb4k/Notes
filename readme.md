@@ -49,6 +49,7 @@ Table of Contents
       * [Speeding up Nmap and ProxyChains](#speeding-up-nmap-and-proxychains)
       * [Scanning ports with NetCat](#scanning-ports-with-netcat)
       * [SSH cipher legacy](#ssh-cipher-kegacy)
+      * [Grep SMB version](#grep-smb-version)
    * [Miscellaneous](#miscellaneous)
       * [Terminal recording](#terminal-recording)
       * [Command output copy](#command-output-copy)
@@ -447,6 +448,15 @@ You can do the following workaround:
 ```bash
 ssh -oKexAlgorithms=+diffie-hellman-group1-sha1 user@hostname
 ```
+
+## Grep SMB version
+Sometimes the most common tools (e.g. Nmap) doesn't retrieve the SMB version of a remote host with the techniques they utilize. In these cases, the following command is very usefull:
+
+```bash
+sudo ngrep -i -d tun0 's.?a.?m.?b.?a.*[[:digit:]]'
+```
+
+Once executed, you only have to establish connection using any tool, such as smbclient, and the version should show up in the termina.
 
 # Miscellaneous
 ## Terminal recording
