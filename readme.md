@@ -49,7 +49,7 @@ Table of Contents
       * [Mount VHDX virtual machines](#mount-vhdx-virtual-machines)
       * [Speeding up Nmap and ProxyChains](#speeding-up-nmap-and-proxychains)
       * [Scanning ports with NetCat](#scanning-ports-with-netcat)
-      * [SSH cipher legacy](#ssh-cipher-kegacy)
+      * [SSH cipher legacy](#ssh-cipher-legacy)
       * [Grep SMB version](#grep-smb-version)
    * [Miscellaneous](#miscellaneous)
       * [Terminal recording](#terminal-recording)
