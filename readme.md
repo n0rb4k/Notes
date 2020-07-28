@@ -51,6 +51,7 @@ Table of Contents
       * [Scanning ports with NetCat](#scanning-ports-with-netcat)
       * [SSH cipher legacy](#ssh-cipher-legacy)
       * [Grep SMB version](#grep-smb-version)
+      * [Extract SSL headers](#extract-ssl-headers)
    * [Miscellaneous](#miscellaneous)
       * [Terminal recording](#terminal-recording)
       * [Command output copy](#command-output-copy)
@@ -468,6 +469,13 @@ sudo ngrep -i -d tun0 's.?a.?m.?b.?a.*[[:digit:]]'
 ```
 
 Once executed, you only have to establish connection using any tool, such as smbclient, and the version should show up in the termina.
+
+## Extract SSL headers
+Sometimes SSL headers have useful information about the web server, users, etc.. The following command retrieves the header of the certificate, where all this information is placed normally:
+
+```bash
+keytool -printcert -sslserver [HOST]:[PORT]
+```
 
 # Miscellaneous
 ## Terminal recording
