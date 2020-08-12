@@ -32,6 +32,7 @@ Table of Contents
       * [From DNSAdmin group to Administrators](#from-dnsadmin-to-administrator)
       * [From Exchange Windows Permissions group to Administrators](#from-exchange-windows-permissions-group-to-administrators)
    * [Post Explotation](#post-explotation)
+      * [Extract locally saved NTLM from Windows](#extract-locally-saved-ntlm-from-windows)
       * [Adding Firewall rules](#adding-firewall-rules)
    * [Pivoting](#pivoting)
       * [Local Port Forward with Netsh](#local-port-forward-with-netsh)
@@ -243,7 +244,7 @@ secretsdump [DOMAIN]/[USER]:[PASSWORD]@10.10.10.161
 
 #  Post Explotation
 
-## Extract locally saved credentials (hashed) from Windows
+## Extract locally saved NTLM from Windows
 These credentials are stored into a set of secured files, which are normally blocked due to various processes reading from these files anytime. A good way to be able to extact the credentials is the following one:
 
 ```cmd
