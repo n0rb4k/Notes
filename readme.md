@@ -558,6 +558,12 @@ I started to learn in deep how to use regex. This search "engine" is one of the 
 ```bash
 (([\d]{1,3}\.){3}[\d]{1,3})\:[\d]{1,5}
 ```
+
+**Matching between two patterns**
+```bash
+(?<=\[)(.*?)(?=\])
+```
+
 ## Reverse a list in Bash
 
 ```bash
