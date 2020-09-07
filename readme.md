@@ -561,7 +561,7 @@ I started to learn in deep how to use regex. This search "engine" is one of the 
 
 **Matching between two patterns**
 ```bash
-(?<=\[)(.*?)(?=\])
+(?<=PATTERN1)(.*?)(?=PATTERN2)
 ```
 
 ## Reverse a list in Bash
