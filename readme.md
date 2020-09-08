@@ -13,7 +13,6 @@ By all of the above I mean that these Notes are not for malignant or malicious p
 Table of Contents
 =================
 
-   * [Table of Contents](#table-of-contents)
    * [Reconnaissance &amp; Gathering](#reconnaissance--gathering)
       * [Mapping the Network](#mapping-the-network)
       * [NBTscan](#nbtscan)
@@ -46,6 +45,7 @@ Table of Contents
       * [Demonstrating the possibility of steal cookies abusing of XSS vulnerability](#demonstrating-the-possibility-of-steal-cookies-abusing-of-xss-vulnerability)
       * [Check for broken links to hijack](#check-for-broken-links-to-hijack)
       * [Bypassing file upload WAF](#bypassing-file-upload-waf)
+   * [AWS hacking](#aws-hacking)
    * [Utils](#utils)
       * [Shell to TT](#shell-to-tt)
       * [Capture traffic](#capture-traffic)
@@ -418,6 +418,17 @@ The following are some tips to get the WAF bypassed, and be able to exploit some
 * Use a NULL-characters: *file.asp%00.php"*
 * Create a file with a forbidden extension: *file.asp:.jpg* or *file.asp::$data*
 * **Combination of the above**
+
+# AWS hacking
+If, during a penetration test, we are lucky and we obtain any AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and/or AWS_SESSION_TOKEN, we can start interrogating the AWS environment of the Enterprise audited.
+
+The retrieve information has to be included in the following path: /home/USERNAME/.aws/credentials
+
+A simple way to enumerate the services available in the environment is:
+
+```bash
+aws s3 ls s3://AWS_URL
+```
 
 # Utils
 ## Shell to TT
