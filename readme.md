@@ -494,7 +494,7 @@ seq 1 65535 | xargs -P 50 -I{} proxychains nmap -p{} -Pn --open -n -T4 --min-par
 In case we don't have nmap available, there is the following simple yet functional for loop:
 
 ```bash
-for i in {1..65535}; do timeout 0.01 nc -z -nv 10.1.1.236 $i; done
+nc -zv [HOST] 1-65535 &> results && cat results | grep succeeded
 ```
 
 ## SSH cipher legacy
