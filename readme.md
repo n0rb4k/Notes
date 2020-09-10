@@ -43,6 +43,7 @@ Table of Contents
       * [Demonstrating the possibility of steal cookies abusing of XSS vulnerability](#demonstrating-the-possibility-of-steal-cookies-abusing-of-xss-vulnerability)
       * [Check for broken links to hijack](#check-for-broken-links-to-hijack)
       * [Bypassing file upload WAF](#bypassing-file-upload-waf)
+      * [LFI Automation](#lfi-automation)
    * [AWS hacking](#aws-hacking)
       * [Obtaining information about EC2](#obtaining-information-about-ec2)
       * [Obtaining a list of S3 buckets](#obtaining-a-list-of-s3-buckets)
@@ -419,6 +420,13 @@ The following are some tips to get the WAF bypassed, and be able to exploit some
 * Use a NULL-characters: *file.asp%00.php"*
 * Create a file with a forbidden extension: *file.asp:.jpg* or *file.asp::$data*
 * **Combination of the above**
+
+# LFI Automation
+
+```bash
+kadimus -u [URL] --parameter [parameter]
+# Example: ./kadimus -u 'http://blabla.php?id' --parameter id
+```
 
 # AWS hacking
 If, during a penetration test, we are lucky and we obtain any AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and/or AWS_SESSION_TOKEN, we can start interrogating the AWS environment of the Enterprise audited.
