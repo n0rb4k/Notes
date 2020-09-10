@@ -3,8 +3,6 @@ The following notes are a mix of all the remarkable things I have seen and am se
 
 These notes have been written mainly to have a collection of commands that have worked well and having it all collected has to serve as a "shortcut".
 
-They have also been written as part of my preparation for OSCP.
-
 By all of the above I mean that these Notes are not for malignant or malicious purposes, and cannot be used to carry out malicious/illegal actions.
 
 **I will not be responsible** in any way for the use people may make of the concepts and commands explained in the following sections.
@@ -46,6 +44,7 @@ Table of Contents
       * [Check for broken links to hijack](#check-for-broken-links-to-hijack)
       * [Bypassing file upload WAF](#bypassing-file-upload-waf)
    * [AWS hacking](#aws-hacking)
+      * [Obtaining information about EC2](#obtaining-information-about-ec2)
    * [Utils](#utils)
       * [Shell to TT](#shell-to-tt)
       * [Capture traffic](#capture-traffic)
@@ -424,10 +423,39 @@ If, during a penetration test, we are lucky and we obtain any AWS_ACCESS_KEY_ID,
 
 The retrieve information has to be included in the following path: /home/USERNAME/.aws/credentials
 
-A simple way to enumerate the services available in the environment is:
+## Obtaining information about EC2
+
+We can start obtaining the list of EC2, as well as detailed information about them:
+
+```bash
+aws ec2 describe-instance-information --output json
+```
+## Obtaining a list of S3 buckets
+
+A simple way to enumerate the S3 available in the environment is:
 
 ```bash
 aws s3 ls s3://AWS_URL
+```
+
+## Executing commands into the EC2 servers
+
+One of the most critical actions we can made against the EC2 servers is to achieve a reverse TCP and then we will penetrate into the infraestructure. From that point maybe we could try to access the internal Enterprise network.
+
+To execute commands we only need to copy any instanceID of the information listed in the [Obtaining information about EC2](#obtaining-information-about-ec2) section.
+
+```bash
+aws ssm send-command --document-name "AWS-RunShellScript" --targets '[{"Key":"InstanceIds","Values":["[INSTANCE_ID]"]}]' --parameters '{"commands":["[COMMAND_TO_EXECUTE]"]}'
+```
+
+The argument **--document-name** is meant to be the name that the the process will be named into the targeted server.
+
+If it has worked and we have the permissions and the EC2 is configured to accept this type of request, the output of the above command has to be returned a **CommandID**. If not, we can try different instances.
+
+Now it only left to execute the following:
+
+```bash
+aws ssm list-command-invocations --command-id "[COMMAND_ID]" --details --output text
 ```
 
 # Utils
