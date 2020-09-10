@@ -45,6 +45,8 @@ Table of Contents
       * [Bypassing file upload WAF](#bypassing-file-upload-waf)
    * [AWS hacking](#aws-hacking)
       * [Obtaining information about EC2](#obtaining-information-about-ec2)
+      * [Obtaining a list of S3 buckets](#obtaining-a-list-of-s3-buckets)
+      * [Executing commands into the EC2 servers](#executing-commands-into-the-ec2-servers)
    * [Utils](#utils)
       * [Shell to TT](#shell-to-tt)
       * [Capture traffic](#capture-traffic)
