@@ -66,6 +66,7 @@ Table of Contents
       * [Bash init commands](#bash-init-commands)
       * [Regex Utils](#regex-utils)
       * [Reverse a list in Bash](#reverse-a-list-in-bash)
+      * [Enable/Disable Ipv6](#enable/disable-ipv6)
 
 # Reconnaissance & Gathering
 ## Mapping the Network
@@ -637,4 +638,12 @@ I started to learn in deep how to use regex. This search "engine" is one of the 
 
 ```bash
 cat [FILE] | awk '{ for (i=NF; i>1; i--) printf("%s ",$i); print $1; }'
+```
+
+# Enable/Disable Ipv6
+
+Just execute the following with value '1' if you want to disable IPv6 on your linux Debian-based system, with '0' if you want to enable:
+```bash
+sysctl -w net.ipv6.conf.all.disable_ipv6=0
+sysctl -w net.ipv6.conf.default.disable_ipv6=0
 ```
