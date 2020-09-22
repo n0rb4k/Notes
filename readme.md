@@ -290,6 +290,7 @@ docker image ls
 docker run -v /:/mnt/pwned -ti [IMAGE_NAME]
 
 # Once executed, we should see a shell like this "root@2eb410b54824". At that step we have only to navigate to "/mnt/pwned" and we will see the target victim file system. So we can see privileges files like /etc/shadow.
+```
 
 # Pivoting
 In the current part there are explained some pivoting techniques that have been useful in many situations.
