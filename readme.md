@@ -309,7 +309,7 @@ echo "stats items" | nc -n [IP] 11211
 # Get key names, it is maybe the most useful because it will gives you if there is any "object" being cached by MemCached to try to retrieve data from.
 echo "stats cachedump [NUMBER] 0" | nc -n [IP] 11211
 # If any object is being cached, we should see some items with their names. This is the moment to check for useful information, just doing:
-echo "get [ITEM_NAME]" | nc -vn [IP] 11211  #Get saved info
+echo "get [ITEM_NAME]" | nc -vn [IP] 11211
 ```
 
 # Pivoting
