@@ -64,6 +64,7 @@ Table of Contents
       * [SSH cipher legacy](#ssh-cipher-legacy)
       * [Grep SMB version](#grep-smb-version)
       * [Extract SSL headers](#extract-ssl-headers)
+      * [Parsing Nmap reports](#parsing-nmap-reports)
    * [Miscellaneous](#miscellaneous)
       * [Terminal recording](#terminal-recording)
       * [Command output copy](#command-output-copy)
@@ -675,6 +676,13 @@ Sometimes SSL headers have useful information about the web server, users, etc..
 
 ```bash
 keytool -printcert -sslserver [HOST]:[PORT]
+```
+
+## Parsing Nmap reports
+In order to get a list of opened ports separated by comma, ready to give nmap to perform some scan, the following code could be useful:
+
+```bash
+grep -o -E "[0-9]{1,5}/open" nmap-report.gnmap | tr -d "/open" | xargs -I {} echo -n {},
 ```
 
 # Miscellaneous
