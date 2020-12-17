@@ -18,6 +18,7 @@ Table of Contents
       * [DNS subdomains reconnaissance](#dns-subdomains-reconnaissance)
       * [NFS enumeration](#nfs-enumeration)
       * [SMTP enumeration](#smtp-enumeration)
+      * [WebApplications screenshot](#webapplications-screenshot)
    * [PowerShell](#powershell)
       * [To load a PS module into the memory](#to-load-a-ps-module-into-the-memory)
       * [Changing <em>ExecutionPolicy</em> to Bypass](#changing-executionpolicy-to-bypass)
@@ -49,6 +50,7 @@ Table of Contents
       * [Bypassing file upload WAF](#bypassing-file-upload-waf)
       * [LFI Automation](#lfi-automation)
       * [Tomcat WebShell Upload When we have no access to the Manager interface](#tomcat-webshell-upload-when-we-have-no-access-to-the-manager-interface)
+      * [Wget Crawler](#wget-crawler)
    * [AWS hacking](#aws-hacking)
       * [Obtaining information about EC2](#obtaining-information-about-ec2)
       * [Obtaining a list of S3 buckets](#obtaining-a-list-of-s3-buckets)
@@ -65,6 +67,7 @@ Table of Contents
       * [Grep SMB version](#grep-smb-version)
       * [Extract SSL headers](#extract-ssl-headers)
       * [Parsing Nmap reports](#parsing-nmap-reports)
+      * [Redirect traffic from interface to another](#redirect-traffic-from-interface-to-another)
    * [Miscellaneous](#miscellaneous)
       * [Terminal recording](#terminal-recording)
       * [Command output copy](#command-output-copy)
@@ -72,6 +75,7 @@ Table of Contents
       * [Regex Utils](#regex-utils)
       * [Reverse a list in Bash](#reverse-a-list-in-bash)
       * [Enable or Disable Ipv6](#enable-or-disable-ipv6)
+      * [Recursively pull git repositories in folder](#recursively-pull-git-repositories-in-folder)
 
 # Reconnaissance & Gathering
 ## Mapping the Network
@@ -122,6 +126,13 @@ sudo mount -t nfs [RHOST]:/[SHARE] /mnt/
 It could be interesting to perform a BruteForce over the SMTP. It's recommended in cases when the nmap enumeration has not returned the data it normally returns.
 ```bash
 smtp-user-enum -M VRFY -U /usr/share/wordlists/dirb/common.txt -t [RHOST]
+```
+
+## WebApplications screenshot
+Something interesting when you are auditing a range of IPs, this would scan for web applications and retrieve a report with the screenshots.
+
+```bash
+nmap [IP-RANGE][NETMASK] --open -oX [OUT-FILE] && eyeWitness -x [OUT-FILE] --web
 ```
 
 # PowerShell
@@ -544,6 +555,12 @@ curl -u $USER:$PASSWORD -T shell.war 'http://[RHOST]:[RPORT]/manager/text/deploy
 curl -u $USER:$PASSWORD http://[RHOST]:[RPORT]/rev_shell/
 ``` 
 
+## Wget Crawler
+This following code will perform a crawling process and will get the files, "cloning" the reachable web site in local:
+```bash
+wget --no-clobber --convert-links --random-wait -r -p --level 1 -E -e robots=off -U mozilla --spider www.google.com 2> out; grep "Saving to" out | cut -d " " -f 3
+```
+
 # AWS hacking
 If, during a penetration test, we are lucky and we obtain any AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY and/or AWS_SESSION_TOKEN, we can start interrogating the AWS environment of the Enterprise audited.
 
@@ -685,6 +702,14 @@ In order to get a list of opened ports separated by comma, ready to give nmap to
 grep -o -E "[0-9]{1,5}/open" nmap-report.gnmap | tr -d "/open" | xargs -I {} echo -n {},
 ```
 
+## Redirect traffic from interface to another
+
+```bash
+sudo sysctl -p
+sudo iptables -t nat -A POSTROUTING --out-interface eth1 -j MASQUERADE
+sudo iptables -A FORWARD --in-interface eth0 -j ACCEPT
+```
+
 # Miscellaneous
 ## Terminal recording
 
@@ -748,4 +773,29 @@ Just execute the following with value '1' if you want to disable IPv6 on your li
 ```bash
 sysctl -w net.ipv6.conf.all.disable_ipv6=0
 sysctl -w net.ipv6.conf.default.disable_ipv6=0
+```
+
+## Recursively pull git repositories in folder
+
+It is needed in order to maintain the repositories updated:
+```bash
+find /home/audit2/Software/ -maxdepth 1 -exec sh -c "tput setaf 3;tput bold;echo '{}';tput sgr0;git pull '{}'" \;
+```
+
+## Remove duplicated files
+
+```bash
+gawk '
+  {
+    cmd="md5sum " q FILENAME q
+    cmd | getline cksm
+    close(cmd)
+    sub(/ .*$/,"",cksm)
+    if(a[cksm]++){
+      cmd="echo rm " q FILENAME q
+      system(cmd)
+      close(cmd)
+    }
+    nextfile
+  }' q='"' *
 ```
