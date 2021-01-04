@@ -68,6 +68,7 @@ Table of Contents
       * [Extract SSL headers](#extract-ssl-headers)
       * [Parsing Nmap reports](#parsing-nmap-reports)
       * [Redirect traffic from interface to another](#redirect-traffic-from-interface-to-another)
+      * [Diffing folder](#diffing-folder)
    * [Miscellaneous](#miscellaneous)
       * [Terminal recording](#terminal-recording)
       * [Command output copy](#command-output-copy)
@@ -708,6 +709,12 @@ grep -o -E "[0-9]{1,5}/open" nmap-report.gnmap | tr -d "/open" | xargs -I {} ech
 sudo sysctl -p
 sudo iptables -t nat -A POSTROUTING --out-interface eth1 -j MASQUERADE
 sudo iptables -A FORWARD --in-interface eth0 -j ACCEPT
+```
+
+## Diffing folder
+
+```bash
+while true; do __Folder__ > /tmp/old.txt;sleep 5;__Folder__ > /tmp/new.txt; diff /tmp/old.txt /tmp/new.txt;mv /tmp/new.txt /tmp/old.txt;done
 ```
 
 # Miscellaneous
