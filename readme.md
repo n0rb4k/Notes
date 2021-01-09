@@ -29,7 +29,7 @@ Table of Contents
       * [Sharing files with Windows machine](#sharing-files-with-windows-machine)
       * [From DNSAdmin group to Administrators](#from-dnsadmin-to-administrator)
       * [From Exchange Windows Permissions group to Administrators](#from-exchange-windows-permissions-group-to-administrators)
-      * [Execute the x64 PowerShell] (#execute-the-x64-powershell)
+      * [Execute the x64 PowerShell](#execute-the-x64-powershell)
    * [Post Explotation Windows](#post-explotation-windows)
       * [Extract locally saved NTLM from Windows](#extract-locally-saved-ntlm-from-windows)
       * [Adding Firewall rules](#adding-firewall-rules)
