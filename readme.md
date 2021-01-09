@@ -38,7 +38,7 @@ Table of Contents
       * [Retrieving data from MemCache](#retrieving-data-from-memcache)
       * [Uploading Malicious Packages to PyPi Server](#uploading-malicious-packages-to-pypi-server)
    * [Active Directory](#active-directory)
-      * [Bloodhound] (#bloodhound)
+      * [Bloodhound](#bloodhound)
    * [Pivoting](#pivoting)
       * [Local Port Forward with Netsh](#local-port-forward-with-netsh)
    * [EternalBlue Vulnerabilities exploitation](#eternalblue-vulnerabilities-exploitation)
