@@ -207,7 +207,7 @@ It would be necessary, in some situations, to execute the x64 version (which is 
 %SystemRoot%\sysnative\WindowsPowerShell\v1.0\powershell.exe
 ```
 
-##List the AV excepcions
+## List the AV excepcions
 ```powershell
 Get-MpPreference | Select-Object -ExpandProperty ExclusionPath
 ```
