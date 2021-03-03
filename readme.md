@@ -25,6 +25,7 @@ Table of Contents
       * [Executing commands as another user](#executing-commands-as-another-user)
       * [Resolve SID to User](#resolve-sid-to-user)
       * [Reverse TCP One Liner](#reverse-tcp-one-liner)
+      * [List the AV excepcions](#list-the-av-excepcions)
    * [PrivEsc on Windows](#privesc-on-windows)
       * [Bypassing Windows Defender](#bypassing-windows-defender)
       * [Sharing files with Windows machine](#sharing-files-with-windows-machine)
@@ -204,6 +205,11 @@ It would be necessary, in some situations, to execute the x64 version (which is 
 
 ```powershell
 %SystemRoot%\sysnative\WindowsPowerShell\v1.0\powershell.exe
+```
+
+##List the AV excepcions
+```powershell
+Get-MpPreference | Select-Object -ExpandProperty ExclusionPath
 ```
 
 # PrivEsc on Windows
