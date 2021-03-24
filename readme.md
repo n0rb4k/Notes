@@ -82,6 +82,7 @@ Table of Contents
       * [Reverse a list in Bash](#reverse-a-list-in-bash)
       * [Enable or Disable Ipv6](#enable-or-disable-ipv6)
       * [Recursively pull git repositories in folder](#recursively-pull-git-repositories-in-folder)
+      * [Tmux Configuration](#tmux-configuration)
 
 # Reconnaissance & Gathering
 ## Mapping the Network
@@ -869,4 +870,22 @@ gawk '
     }
     nextfile
   }' q='"' *
+```
+
+## Tmux Configuration
+
+```bash
+# Increae the number of scrollback lines
+set -g history-limit 10000
+
+# split panes using | and -
+bind - split-window -v
+unbind '%'
+
+# Enable mouse mode (tmux 2.1 and above)
+set -g mouse on
+set -g terminal-overrides 'xterm*:smcup@:rmcup@'
+
+# don't rename windows automatically
+set-option -g allow-rename off
 ```
