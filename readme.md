@@ -27,6 +27,7 @@ Table of Contents
       * [Reverse TCP One Liner](#reverse-tcp-one-liner)
       * [List the AV excepcions](#list-the-av-excepcions)
       * [Impersonating user through delegation](#impersonating-user-through-delegation)
+      * [Useful PowerView executions](#useful-powerview-executions)
    * [PrivEsc on Windows](#privesc-on-windows)
       * [Bypassing Windows Defender](#bypassing-windows-defender)
       * [Sharing files with Windows machine](#sharing-files-with-windows-machine)
@@ -873,19 +874,15 @@ gawk '
 ```
 
 ## Tmux Configuration
-
 ```bash
 # Increae the number of scrollback lines
 set -g history-limit 10000
-
 # split panes using | and -
 bind - split-window -v
 unbind '%'
-
 # Enable mouse mode (tmux 2.1 and above)
 set -g mouse on
 set -g terminal-overrides 'xterm*:smcup@:rmcup@'
-
 # don't rename windows automatically
 set-option -g allow-rename off
 ```
