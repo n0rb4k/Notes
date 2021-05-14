@@ -84,6 +84,7 @@ Table of Contents
       * [Enable or Disable Ipv6](#enable-or-disable-ipv6)
       * [Recursively pull git repositories in folder](#recursively-pull-git-repositories-in-folder)
       * [Tmux Configuration](#tmux-configuration)
+      * [Open multiple browser tabs](#open-multiple-browser-tabs)
 
 # Reconnaissance & Gathering
 ## Mapping the Network
@@ -885,4 +886,13 @@ set -g mouse on
 set -g terminal-overrides 'xterm*:smcup@:rmcup@'
 # don't rename windows automatically
 set-option -g allow-rename off
+```
+
+## Open multiple browser tabs
+```javascript
+function singleWebOpenTabs(baseUrl, endPoints){
+  for (i=0; i < endPoints.length; i++)
+  	{window.open(baseUrl + "/" + endPoints[i], "_blank")
+  }
+}
 ```
