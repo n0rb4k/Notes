@@ -144,6 +144,28 @@ Something interesting when you are auditing a range of IPs, this would scan for 
 nmap [IP-RANGE][NETMASK] --open -oX [OUT-FILE] && eyeWitness -x [OUT-FILE] --web
 ```
 
+However, if you want to take not only a portion of the web page screenshot but all the web page in an image, the following code could be utilized:
+
+```python
+from selenium import webdriver
+import sys
+
+URL = sys.argv[1]
+
+options = webdriver.ChromeOptions()
+options.headless = True
+options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36")
+
+driver = webdriver.Chrome(options=options)
+driver.get(URL)
+
+S = lambda X: driver.execute_script('return document.body.parentNode.scroll'+X)
+driver.set_window_size(S('Width'),S('Height'))
+driver.find_element_by_tag_name('body').screenshot('web_screenshot.png')
+
+driver.quit()
+```
+
 # PowerShell
 ## To load a PS module into the memory
 ```powershell
